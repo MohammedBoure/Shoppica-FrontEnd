@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Sidebar -->
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 bg-indigo-800 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+      <!-- Hamburger Menu Button -->
+      <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 text-indigo-600 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+      <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-6">Cart Management</h2>
+        <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+        <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading...</div>
+
+        <!-- Tabs -->
+        <div class="mb-4">
+          <ul class="flex border-b">
+            <li class="mr-1">
+              <button id="tab-all-carts" class="bg-white inline-block py-2 px-4 text-indigo-600 font-semibold border-l border-t border-r rounded-t">All Cart Items</button>
+            </li>
+            <li class="mr-1">
+              <button id="tab-user-cart" class="bg-white inline-block py-2 px-4 text-gray-600 font-semibold border-l border-t border-r rounded-t">User Cart</button>
+            </li>
+            <li class="mr-1">
+              <button id="tab-add-item" class="bg-white inline-block py-2 px-4 text-gray-600 font-semibold border-l border-t border-r rounded-t">Add Cart Item</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- All Cart Items -->
+        <div id="all-carts" class="tab-content">
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">All Cart Items</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">User ID</th>
+                  <th class="px-4 py-2 text-left">Product ID</th>
+                  <th class="px-4 py-2 text-left">Quantity</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="all-carts-table" class="divide-y divide-gray-200">
+                <tr><td colspan="5" class="px-4 py-2 text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- User Cart -->
+        <div id="user-cart" class="tab-content hidden">
+          <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-lg font-semibold mb-4">Search User Cart</h3>
+            <div class="flex space-x-4 mb-4">
+              <input id="user-id-search" type="number" min="1" placeholder="Enter User ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              <button onclick="fetchUserCart()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Search</button>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">User Cart Items</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Product ID</th>
+                  <th class="px-4 py-2 text-left">Quantity</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="user-cart-table" class="divide-y divide-gray-200">
+                <tr><td colspan="4" class="px-4 py-2 text-center">Enter a User ID to view cart</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add Cart Item -->
+        <div id="add-item" class="tab-content hidden">
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Add Cart Item</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="add-product-id" class="block text-sm font-medium text-gray-700">Product ID</label>
+                <select id="add-product-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                  <option value="">Select Product</option>
+                </select>
+              </div>
+              <div>
+                <label for="add-quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                <input id="add-quantity" type="number" min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+            </div>
+            <button onclick="addCartItem()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Item</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    // Submenu Toggle
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
+
+    // Tab Switching
+    document.querySelectorAll('button[id^="tab-"]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+        document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+          btn.classList.remove('text-indigo-600');
+          btn.classList.add('text-gray-600');
+        });
+        document.getElementById(button.id.replace('tab-', '')).classList.remove('hidden');
+        button.classList.remove('text-gray-600');
+        button.classList.add('text-indigo-600');
+      });
+    });
+
+    // Fetch Products for Dropdown
+    async function fetchProducts() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products?page=1&per_page=100`);
+        if (!response.ok) throw new Error('Failed to fetch products');
+        const data = await response.json();
+        const products = data.products.filter(product => product.is_active);
+        const select = document.getElementById('add-product-id');
+        select.innerHTML = '<option value="">Select Product</option>' + 
+          products.map(product => `<option value="${product.id}">${product.name} (ID: ${product.id})</option>`).join('');
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    // Fetch All Cart Items (Admin Only)
+    async function fetchAllCartItems() {
+      const errorElement = document.getElementById('error-message');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        document.getElementById('all-carts-table').innerHTML = '<tr><td colspan="5" class="px-4 py-2 text-center">Admin access required</td></tr>';
+        return;
+      }
+      try {
+        const response = await fetch(`${API_BASE_URL}/admin/cart_items?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch cart items (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const cartItems = data.cart_items || [];
+        const table = document.getElementById('all-carts-table');
+        table.innerHTML = cartItems.length ? cartItems.map(item => `
+          <tr>
+            <td class="px-4 py-2">${item.id}</td>
+            <td class="px-4 py-2">${item.user_id}</td>
+            <td class="px-4 py-2">${item.product_id}</td>
+            <td class="px-4 py-2">${item.quantity}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditModal(${item.id}, ${item.quantity})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteCartItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="5" class="px-4 py-2 text-center">No cart items found</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching all cart items:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+        document.getElementById('all-carts-table').innerHTML = '<tr><td colspan="5" class="px-4 py-2 text-center">Error loading cart items</td></tr>';
+      }
+    }
+
+    // Fetch User Cart (Admin Only)
+    async function fetchUserCart() {
+      const userId = document.getElementById('user-id-search').value;
+      const errorElement = document.getElementById('error-message');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        document.getElementById('user-cart-table').innerHTML = '<tr><td colspan="4" class="px-4 py-2 text-center">Admin access required</td></tr>';
+        return;
+      }
+      if (!userId || userId < 1) {
+        errorElement.textContent = 'Please enter a valid User ID';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      try {
+        const response = await fetch(`${API_BASE_URL}/admin/cart_items/user/${userId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch user cart (Status: ${response.status})`);
+        }
+        const cartItems = await response.json();
+        const table = document.getElementById('user-cart-table');
+        table.innerHTML = cartItems.length ? cartItems.map(item => `
+          <tr>
+            <td class="px-4 py-2">${item.id}</td>
+            <td class="px-4 py-2">${item.product_id}</td>
+            <td class="px-4 py-2">${item.quantity}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditModal(${item.id}, ${item.quantity})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteCartItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No cart items found for this user</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching user cart:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+        document.getElementById('user-cart-table').innerHTML = '<tr><td colspan="4" class="px-4 py-2 text-center">Error loading cart items</td></tr>';
+      }
+    }
+
+    // Add Cart Item
+    async function addCartItem() {
+      const productId = document.getElementById('add-product-id').value;
+      const quantity = parseInt(document.getElementById('add-quantity').value);
+      const errorElement = document.getElementById('error-message');
+
+      if (!productId || isNaN(quantity) || quantity < 1) {
+        errorElement.textContent = 'Product ID and a valid quantity are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/cart/items`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product_id: parseInt(productId), quantity }),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add cart item (Status: ${response.status})`);
+        }
+        document.getElementById('add-product-id').value = '';
+        document.getElementById('add-quantity').value = '';
+        fetchAllCartItems();
+        errorElement.classList.add('hidden');
+        alert('Cart item added successfully to your (admin) cart!');
+      } catch (error) {
+        console.error('Error adding cart item:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Edit Cart Item Modal
+    function openEditModal(cartItemId, currentQuantity) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <h3 class="text-lg font-semibold mb-4">Edit Cart Item (ID: ${cartItemId})</h3>
+          <div class="space-y-4">
+            <div>
+              <label for="edit-quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+              <input id="edit-quantity" type="number" min="1" value="${currentQuantity}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end space-x-2">
+            <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+            <!-- CORRECTED: Pass 'this' to the update function -->
+            <button onclick="updateCartItem(${cartItemId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    // Update Cart Item
+    async function updateCartItem(cartItemId, buttonElement) {
+      const quantity = parseInt(document.getElementById('edit-quantity').value);
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(quantity) || quantity < 1) {
+        errorElement.textContent = 'A valid quantity is required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/cart/items/${cartItemId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quantity }),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update cart item (Status: ${response.status})`);
+        }
+        // CORRECTED: Use the button element to remove the correct modal
+        buttonElement.closest('div.fixed').remove();
+        
+        // Refresh data
+        fetchAllCartItems();
+        // IMPROVEMENT: Only refresh the user cart if a user is being displayed
+        const searchUserId = document.getElementById('user-id-search').value;
+        if (searchUserId) {
+            fetchUserCart();
+        }
+        
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating cart item:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Delete Cart Item
+    async function deleteCartItem(cartItemId) {
+      if (!confirm('Are you sure you want to delete this cart item?')) return;
+      const errorElement = document.getElementById('error-message');
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/cart/items/${cartItemId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete cart item (Status: ${response.status})`);
+        }
+        
+        // Refresh data
+        fetchAllCartItems();
+        // IMPROVEMENT: Only refresh the user cart if a user is being displayed
+        const searchUserId = document.getElementById('user-id-search').value;
+        if (searchUserId) {
+            fetchUserCart();
+        }
+        
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting cart item:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load data on page load
+    window.onload = () => {
+      fetchProducts();
+      fetchAllCartItems();
+      document.getElementById('tab-user-cart').addEventListener('click', () => {
+        document.getElementById('user-cart-table').innerHTML = '<tr><td colspan="4" class="px-4 py-2 text-center">Enter a User ID to view cart</td></tr>';
+      });
+    };
+  </script>
+</body>
+</html>

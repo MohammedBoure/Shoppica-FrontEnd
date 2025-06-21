@@ -5,91 +5,259 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Category Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <!-- CORRECTED AND IMPROVED: New CSS for a better tree view -->
   <style>
-    .tree ul {
-      padding-left: 20px;
+    .tree, .tree ul {
       list-style: none;
+      padding-left: 22px;
     }
     .tree li {
       position: relative;
-      padding: 5px 0;
+      padding: 3px 0;
     }
-    .tree li:before {
-      content: '└──';
+    /* Vertical line */
+    .tree ul {
+      border-left: 1px solid #ccc;
+    }
+    /* Horizontal line connector */
+    .tree li::before {
+      content: '';
       position: absolute;
-      left: -20px;
+      top: 15px;
+      left: -22px;
+      width: 18px;
+      height: 1px;
+      background-color: #ccc;
+    }
+    /* Cover the vertical line for the last item to make an 'L' shape */
+    .tree li:last-child::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: -22px;
+      width: 1px;
+      height: 100%;
+      /* This color MUST match the card background (bg-white) */
+      background-color: #fff; 
     }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <!-- Navbar -->
-  <nav class="bg-indigo-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
-      <div class="space-x-4">
-        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
-        <a href="./users.html" class="hover:underline">User Management</a>
-        <a href="./products.html" class="hover:underline">Product Management</a>
-        <a href="./orders.html" class="hover:underline">Order Management</a>
-        <a href="./reviews.html" class="hover:underline">Review Management</a>
-        <a href="./pos.html" class="hover:underline">Point of Sale</a>
-        <a href="./category-discounts.html" class="hover:underline">Category Discount Management</a>
-        <a href="/logout.html" class="hover:underline">Logout</a>
+  <!-- Sidebar -->
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-6">Category Management</h2>
-    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
-    <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading categories...</div>
-
-    <!-- Add Category Form -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-      <h3 class="text-lg font-semibold mb-4">Add New Category</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="add-name" class="block text-sm font-medium text-gray-700">Category Name</label>
-          <input id="add-name" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
         </div>
-        <div>
-          <label for="add-parent-id" class="block text-sm font-medium text-gray-700">Parent Category</label>
-          <select id="add-parent-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-            <option value="">None (Top-Level)</option>
-          </select>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 bg-indigo-800 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+      <!-- Hamburger Menu Button -->
+      <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 text-indigo-600 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+      <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-6">Category Management</h2>
+        <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+        <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading categories...</div>
+
+        <!-- Add Category Form -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+          <h3 class="text-lg font-semibold mb-4">Add New Category</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="add-name" class="block text-sm font-medium text-gray-700">Category Name</label>
+              <input id="add-name" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label for="add-parent-id" class="block text-sm font-medium text-gray-700">Parent Category</label>
+              <select id="add-parent-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">None (Top-Level)</option>
+              </select>
+            </div>
+          </div>
+          <button onclick="addCategory()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Category</button>
+        </div>
+
+        <!-- Category Tree View -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+          <h3 class="text-lg font-semibold mb-4">Category Tree</h3>
+          <div id="category-tree" class="tree">
+            <p>Loading tree...</p>
+          </div>
+        </div>
+
+        <!-- Categories Table -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold mb-4">All Categories</h3>
+          <table class="w-full table-auto">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Name</th>
+                <th class="px-4 py-2 text-left">Parent ID</th>
+                <th class="px-4 py-2 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-table" class="divide-y divide-gray-200">
+              <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <button onclick="addCategory()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Category</button>
-    </div>
-
-    <!-- Category Tree View -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-      <h3 class="text-lg font-semibold mb-4">Category Tree</h3>
-      <div id="category-tree" class="tree"></div>
-    </div>
-
-    <!-- Categories Table -->
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <h3 class="text-lg font-semibold mb-4">All Categories</h3>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">ID</th>
-            <th class="px-4 py-2 text-left">Name</th>
-            <th class="px-4 py-2 text-left">Parent ID</th>
-            <th class="px-4 py-2 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="categories-table" class="divide-y divide-gray-200">
-          <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
   <script>
     const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    // Submenu Toggle
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
 
     async function fetchCategories() {
       const errorElement = document.getElementById('error-message');
@@ -98,7 +266,6 @@
       loadingElement.classList.remove('hidden');
 
       try {
-        // Fetch all categories for table and parent dropdown
         const response = await fetch(`${API_BASE_URL}/categories?page=1&per_page=100`, {
           method: 'GET',
           credentials: 'include'
@@ -110,7 +277,6 @@
         const data = await response.json();
         const categories = data.categories;
 
-        // Populate categories table
         const categoriesTable = document.getElementById('categories-table');
         categoriesTable.innerHTML = categories.length ? categories.map(category => `
           <tr>
@@ -124,11 +290,9 @@
           </tr>
         `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No categories found</td></tr>';
 
-        // Populate parent category dropdown
         parentSelect.innerHTML = '<option value="">None (Top-Level)</option>' + 
           categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('');
 
-        // Build category tree
         await buildCategoryTree();
 
         errorElement.classList.add('hidden');
@@ -141,50 +305,47 @@
       }
     }
 
+    // CORRECTED: Reverted to the recursive, working version for building the tree
     async function buildCategoryTree() {
-      const treeElement = document.getElementById('category-tree');
-      try {
-        // Fetch top-level categories (parent_id = null)
-        const response = await fetch(`${API_BASE_URL}/categories/parent`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to fetch top-level categories (Status: ${response.status})`);
-        }
-        const data = await response.json();
-        const topLevelCategories = data.categories;
+        const treeElement = document.getElementById('category-tree');
+        try {
+            const response = await fetch(`${API_BASE_URL}/categories/parent`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch top-level categories');
+            }
+            const data = await response.json();
+            const topLevelCategories = data.categories;
 
-        // Build tree recursively
-        treeElement.innerHTML = await renderCategoryTree(topLevelCategories);
-      } catch (error) {
-        console.error('Error building category tree:', error);
-        treeElement.innerHTML = '<p class="text-red-500">Failed to load category tree</p>';
-      }
+            treeElement.innerHTML = await renderCategoryTree(topLevelCategories);
+        } catch (error) {
+            console.error('Error building category tree:', error);
+            treeElement.innerHTML = '<p class="text-red-500">Failed to load category tree.</p>';
+        }
     }
 
-    async function renderCategoryTree(categories, depth = 0) {
-      if (!categories.length) return '';
-      let html = '<ul>';
-      for (const category of categories) {
-        html += `<li>${category.name} (ID: ${category.id})`;
-        // Fetch subcategories
-        const subResponse = await fetch(`${API_BASE_URL}/categories/parent?parent_id=${category.id}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (subResponse.ok) {
-          const subData = await subResponse.json();
-          const subCategories = subData.categories;
-          if (subCategories.length) {
-            html += await renderCategoryTree(subCategories, depth + 1);
-          }
+    // CORRECTED: Reverted to the recursive, working version for rendering
+    async function renderCategoryTree(categories) {
+        if (!categories || !categories.length) return '';
+        let html = '<ul>';
+        for (const category of categories) {
+            html += `<li>${category.name} (ID: ${category.id})`;
+            const subResponse = await fetch(`${API_BASE_URL}/categories/parent?parent_id=${category.id}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (subResponse.ok) {
+                const subData = await subResponse.json();
+                if (subData.categories && subData.categories.length > 0) {
+                    html += await renderCategoryTree(subData.categories);
+                }
+            }
+            html += '</li>';
         }
-        html += '</li>';
-      }
-      html += '</ul>';
-      return html;
+        html += '</ul>';
+        return html;
     }
 
     async function addCategory() {
@@ -209,7 +370,7 @@
         const response = await fetch(`${API_BASE_URL}/categories`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, parent_id }),
+          body: JSON.stringify({ name, parent_id: parent_id ? parseInt(parent_id) : null }),
           credentials: 'include'
         });
         if (!response.ok) {
@@ -228,7 +389,7 @@
     }
 
     async function deleteCategory(categoryId) {
-      if (!confirm('Are you sure you want to delete this category?')) return;
+      if (!confirm('Are you sure you want to delete this category? This will also delete all its subcategories.')) return;
       const errorElement = document.getElementById('error-message');
       const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -258,62 +419,65 @@
 
     async function openEditModal(categoryId) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
       if (!user.is_admin) {
-        document.getElementById('error-message').textContent = 'Admin privileges required';
-        document.getElementById('error-message').classList.remove('hidden');
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
         return;
       }
 
-      // Fetch category details
-      const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
-        method: 'GET',
-        credentials: 'include'
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        document.getElementById('error-message').textContent = errorData.error || 'Failed to fetch category';
-        document.getElementById('error-message').classList.remove('hidden');
-        return;
+      try {
+        const catResponse = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!catResponse.ok) throw new Error('Failed to fetch category details');
+        const category = await catResponse.json();
+
+        const allCatsResponse = await fetch(`${API_BASE_URL}/categories?page=1&per_page=100`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!allCatsResponse.ok) throw new Error('Failed to fetch category list');
+        const allCatsData = await allCatsResponse.json();
+        const allCategories = allCatsData.categories;
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Category</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-name" class="block text-sm font-medium text-gray-700">Category Name</label>
+                <input id="edit-name" type="text" value="${category.name}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label for="edit-parent-id" class="block text-sm font-medium text-gray-700">Parent Category</label>
+                <select id="edit-parent-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">None (Top-Level)</option>
+                  ${allCategories.filter(c => c.id !== categoryId).map(c => `<option value="${c.id}" ${c.id === category.parent_id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <!-- CORRECTED: Pass 'this' to the update function -->
+              <button onclick="updateCategory(${categoryId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error opening edit modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
       }
-      const category = await response.json();
-
-      // Fetch all categories for parent dropdown
-      const categoriesResponse = await fetch(`${API_BASE_URL}/categories?page=1&per_page=100`, {
-        method: 'GET',
-        credentials: 'include'
-      });
-      const categoriesData = await categoriesResponse.json();
-      const categories = categoriesData.categories;
-
-      // Create modal
-      const modal = document.createElement('div');
-      modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
-      modal.innerHTML = `
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h3 class="text-lg font-semibold mb-4">Edit Category</h3>
-          <div class="space-y-4">
-            <div>
-              <label for="edit-name" class="block text-sm font-medium text-gray-700">Category Name</label>
-              <input id="edit-name" type="text" value="${category.name}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
-            </div>
-            <div>
-              <label for="edit-parent-id" class="block text-sm font-medium text-gray-700">Parent Category</label>
-              <select id="edit-parent-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                <option value="">None (Top-Level)</option>
-                ${categories.filter(c => c.id !== categoryId).map(c => `<option value="${c.id}" ${c.id === category.parent_id ? 'selected' : ''}>${c.name}</option>`).join('')}
-              </select>
-            </div>
-          </div>
-          <div class="mt-4 flex justify-end space-x-2">
-            <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
-            <button onclick="updateCategory(${categoryId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
     }
 
-    async function updateCategory(categoryId) {
+    // CORRECTED: Accept the button element as a parameter
+    async function updateCategory(categoryId, buttonElement) {
       const name = document.getElementById('edit-name').value;
       const parent_id = document.getElementById('edit-parent-id').value || null;
       const errorElement = document.getElementById('error-message');
@@ -328,14 +492,15 @@
         const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, parent_id }),
+          body: JSON.stringify({ name, parent_id: parent_id ? parseInt(parent_id) : null }),
           credentials: 'include'
         });
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || `Failed to update category (Status: ${response.status})`);
         }
-        document.querySelector('div.fixed').remove();
+        // CORRECTED: Use the button element to remove the correct modal
+        buttonElement.closest('div.fixed').remove();
         fetchCategories();
         errorElement.classList.add('hidden');
       } catch (error) {

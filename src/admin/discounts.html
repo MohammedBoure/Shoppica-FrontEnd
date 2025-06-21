@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discount Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+       <!-- Hamburger Menu Button -->
+      <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 text-indigo-600 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+      <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-6">Discount Management</h2>
+        <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+        <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading...</div>
+
+        <!-- Tabs -->
+        <div class="mb-4">
+          <ul class="flex border-b">
+            <li class="mr-1">
+              <button id="tab-general" class="bg-white inline-block py-2 px-4 text-indigo-600 font-semibold border-l border-t border-r rounded-t">General Discounts</button>
+            </li>
+            <li class="mr-1">
+              <button id="tab-product" class="bg-white inline-block py-2 px-4 text-gray-600 font-semibold border-l border-t border-r rounded-t">Product Discounts</button>
+            </li>
+            <li class="mr-1">
+              <button id="tab-category" class="bg-white inline-block py-2 px-4 text-gray-600 font-semibold border-l border-t border-r rounded-t">Category Discounts</button>
+            </li>
+            <li class="mr-1">
+              <button id="tab-usages" class="bg-white inline-block py-2 px-4 text-gray-600 font-semibold border-l border-t border-r rounded-t">Discount Usages</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- General Discounts -->
+        <div id="general-discounts" class="tab-content">
+          <!-- Add General Discount Form -->
+          <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-lg font-semibold mb-4">Add General Discount</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="general-code" class="block text-sm font-medium text-gray-700">Code</label>
+                <input id="general-code" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label for="general-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent (0-100)</label>
+                <input id="general-discount-percent" type="number" step="0.1" min="0" max="100" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label for="general-max-uses" class="block text-sm font-medium text-gray-700">Max Uses</label>
+                <input id="general-max-uses" type="number" min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="general-expires-at" class="block text-sm font-medium text-gray-700">Expires At (ISO 8601)</label>
+                <input id="general-expires-at" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="md:col-span-2">
+                <label for="general-description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="general-description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+            </div>
+            <button onclick="addGeneralDiscount()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Discount</button>
+          </div>
+
+          <!-- General Discounts Table -->
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">General Discounts</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Code</th>
+                  <th class="px-4 py-2 text-left">Percent</th>
+                  <th class="px-4 py-2 text-left">Max Uses</th>
+                  <th class="px-4 py-2 text-left">Expires At</th>
+                  <th class="px-4 py-2 text-left">Active</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="general-discounts-table" class="divide-y divide-gray-200">
+                <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Product Discounts -->
+        <div id="product-discounts" class="tab-content hidden">
+          <!-- Add Product Discount Form -->
+          <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-lg font-semibold mb-4">Add Product Discount</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="product-id" class="block text-sm font-medium text-gray-700">Product</label>
+                <select id="product-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                  <option value="">Select Product</option>
+                </select>
+              </div>
+              <div>
+                <label for="product-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent (0-100)</label>
+                <input id="product-discount-percent" type="number" step="0.1" min="0" max="100" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label for="product-starts-at" class="block text-sm font-medium text-gray-700">Starts At (ISO 8601)</label>
+                <input id="product-starts-at" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="product-ends-at" class="block text-sm font-medium text-gray-700">Ends At (ISO 8601)</label>
+                <input id="product-ends-at" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+            </div>
+            <button onclick="addProductDiscount()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Discount</button>
+          </div>
+
+          <!-- Product Discounts Table -->
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Product Discounts</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Product</th>
+                  <th class="px-4 py-2 text-left">Percent</th>
+                  <th class="px-4 py-2 text-left">Starts At</th>
+                  <th class="px-4 py-2 text-left">Ends At</th>
+                  <th class="px-4 py-2 text-left">Active</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="product-discounts-table" class="divide-y divide-gray-200">
+                <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Category Discounts -->
+        <div id="category-discounts" class="tab-content hidden">
+          <!-- Add Category Discount Form -->
+          <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-lg font-semibold mb-4">Add Category Discount</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="category-id" class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="category-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                  <option value="">Select Category</option>
+                </select>
+              </div>
+              <div>
+                <label for="category-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent (0-100)</label>
+                <input id="category-discount-percent" type="number" step="0.1" min="0" max="100" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label for="category-starts-at" class="block text-sm font-medium text-gray-700">Starts At (ISO 8601)</label>
+                <input id="category-starts-at" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="category-ends-at" class="block text-sm font-medium text-gray-700">Ends At (ISO 8601)</label>
+                <input id="category-ends-at" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+            </div>
+            <button onclick="addCategoryDiscount()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Discount</button>
+          </div>
+
+          <!-- Category Discounts Table -->
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Category Discounts</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Category</th>
+                  <th class="px-4 py-2 text-left">Percent</th>
+                  <th class="px-4 py-2 text-left">Starts At</th>
+                  <th class="px-4 py-2 text-left">Ends At</th>
+                  <th class="px-4 py-2 text-left">Active</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="category-discounts-table" class="divide-y divide-gray-200">
+                <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Discount Usages -->
+        <div id="discount-usages" class="tab-content hidden">
+          <!-- Discount Usages Table -->
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Discount Usages</h3>
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="px-4 py-2 text-left">ID</th>
+                  <th class="px-4 py-2 text-left">Discount Code</th>
+                  <th class="px-4 py-2 text-left">User ID</th>
+                  <th class="px-4 py-2 text-left">Used At</th>
+                  <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="discount-usages-table" class="divide-y divide-gray-200">
+                <tr><td colspan="5" class="px-4 py-2 text-center">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // --- Sidebar and Submenu Controls ---
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
+    // --- End Sidebar Controls ---
+
+
+    // --- Discount Management Controls ---
+    // Tab Switching
+    document.querySelectorAll('button[id^="tab-"]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+        document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+          btn.classList.remove('text-indigo-600');
+          btn.classList.add('text-gray-600');
+        });
+        document.getElementById(button.id.replace('tab-', '') + '-discounts').classList.remove('hidden');
+        button.classList.remove('text-gray-600');
+        button.classList.add('text-indigo-600');
+      });
+    });
+
+    // Fetch Products and Categories
+    async function fetchProducts() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products?page=1&per_page=100`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) throw new Error('Failed to fetch products');
+        const data = await response.json();
+        const products = data.products;
+        const select = document.getElementById('product-id');
+        select.innerHTML = '<option value="">Select Product</option>' + 
+          products.map(product => `<option value="${product.id}">${product.name}</option>`).join('');
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    async function fetchCategories() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/categories?page=1&per_page=100`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        const data = await response.json();
+        const categories = data.categories;
+        const select = document.getElementById('category-id');
+        select.innerHTML = '<option value="">Select Category</option>' + 
+          categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('');
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    }
+
+    // Fetch Discounts
+    async function fetchGeneralDiscounts() {
+      const errorElement = document.getElementById('error-message');
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+        const response = await fetch(`${API_BASE_URL}/discounts?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch discounts (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const discounts = data.discounts || [];
+        const table = document.getElementById('general-discounts-table');
+        table.innerHTML = discounts.length ? discounts.map(discount => `
+          <tr>
+            <td class="px-4 py-2">${discount.id}</td>
+            <td class="px-4 py-2">${discount.code}</td>
+            <td class="px-4 py-2">${discount.discount_percent}%</td>
+            <td class="px-4 py-2">${discount.max_uses || '-'}</td>
+            <td class="px-4 py-2">${discount.expires_at ? new Date(discount.expires_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${discount.is_active ? 'Yes' : 'No'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditGeneralModal(${discount.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteGeneralDiscount(${discount.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No discounts found</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching general discounts:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function fetchProductDiscounts() {
+      const errorElement = document.getElementById('error-message');
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+        const response = await fetch(`${API_BASE_URL}/product_discounts?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch product discounts (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const discounts = data.product_discounts || [];
+        const table = document.getElementById('product-discounts-table');
+        table.innerHTML = discounts.length ? discounts.map(discount => `
+          <tr>
+            <td class="px-4 py-2">${discount.id}</td>
+            <td class="px-4 py-2">${discount.product_name} (ID: ${discount.product_id})</td>
+            <td class="px-4 py-2">${discount.discount_percent}%</td>
+            <td class="px-4 py-2">${discount.starts_at ? new Date(discount.starts_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${discount.ends_at ? new Date(discount.ends_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${discount.is_active ? 'Yes' : 'No'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditProductModal(${discount.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteProductDiscount(${discount.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No product discounts found</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching product discounts:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function fetchCategoryDiscounts() {
+      const errorElement = document.getElementById('error-message');
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+        const response = await fetch(`${API_BASE_URL}/category_discounts?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch category discounts (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const discounts = data.category_discounts || [];
+        const table = document.getElementById('category-discounts-table');
+        table.innerHTML = discounts.length ? discounts.map(discount => `
+          <tr>
+            <td class="px-4 py-2">${discount.id}</td>
+            <td class="px-4 py-2">${discount.category_id}</td>
+            <td class="px-4 py-2">${discount.discount_percent}%</td>
+            <td class="px-4 py-2">${discount.starts_at ? new Date(discount.starts_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${discount.ends_at ? new Date(discount.ends_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${discount.is_active ? 'Yes' : 'No'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditCategoryModal(${discount.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteCategoryDiscount(${discount.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No category discounts found</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching category discounts:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function fetchDiscountUsages() {
+      const errorElement = document.getElementById('error-message');
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+        const response = await fetch(`${API_BASE_URL}/discount_usages?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch discount usages (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const usages = data.discount_usages || [];
+        const table = document.getElementById('discount-usages-table');
+        table.innerHTML = usages.length ? usages.map(usage => `
+          <tr>
+            <td class="px-4 py-2">${usage.id}</td>
+            <td class="px-4 py-2">${usage.discount_code || '-'}</td>
+            <td class="px-4 py-2">${usage.user_id}</td>
+            <td class="px-4 py-2">${new Date(usage.used_at).toLocaleString()}</td>
+            <td class="px-4 py-2">
+              <button onclick="deleteDiscountUsage(${usage.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="5" class="px-4 py-2 text-center">No discount usages found</td></tr>';
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching discount usages:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Add Discounts
+    async function addGeneralDiscount() {
+      const code = document.getElementById('general-code').value;
+      const discount_percent = parseFloat(document.getElementById('general-discount-percent').value);
+      const max_uses = document.getElementById('general-max-uses').value || null;
+      const expires_at = document.getElementById('general-expires-at').value ? new Date(document.getElementById('general-expires-at').value).toISOString() : null;
+      const description = document.getElementById('general-description').value || null;
+      const errorElement = document.getElementById('error-message');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (!code || isNaN(discount_percent)) {
+        errorElement.textContent = 'Code and discount percent are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (max_uses && parseInt(max_uses) < 0) {
+        errorElement.textContent = 'Max uses must be non-negative';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { code, discount_percent };
+        if (max_uses) payload.max_uses = parseInt(max_uses);
+        if (expires_at) payload.expires_at = expires_at;
+        if (description) payload.description = description;
+
+        const response = await fetch(`${API_BASE_URL}/discounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add discount (Status: ${response.status})`);
+        }
+        document.getElementById('general-code').value = '';
+        document.getElementById('general-discount-percent').value = '';
+        document.getElementById('general-max-uses').value = '';
+        document.getElementById('general-expires-at').value = '';
+        document.getElementById('general-description').value = '';
+        fetchGeneralDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error adding general discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function addProductDiscount() {
+      const product_id = document.getElementById('product-id').value;
+      const discount_percent = parseFloat(document.getElementById('product-discount-percent').value);
+      const starts_at = document.getElementById('product-starts-at').value ? new Date(document.getElementById('product-starts-at').value).toISOString() : null;
+      const ends_at = document.getElementById('product-ends-at').value ? new Date(document.getElementById('product-ends-at').value).toISOString() : null;
+      const errorElement = document.getElementById('error-message');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (!product_id || isNaN(discount_percent)) {
+        errorElement.textContent = 'Product ID and discount percent are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (starts_at && ends_at && new Date(starts_at) > new Date(ends_at)) {
+        errorElement.textContent = 'Start date must be before end date';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { product_id: parseInt(product_id), discount_percent };
+        if (starts_at) payload.starts_at = starts_at;
+        if (ends_at) payload.ends_at = ends_at;
+
+        const response = await fetch(`${API_BASE_URL}/product_discounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add product discount (Status: ${response.status})`);
+        }
+        document.getElementById('product-id').value = '';
+        document.getElementById('product-discount-percent').value = '';
+        document.getElementById('product-starts-at').value = '';
+        document.getElementById('product-ends-at').value = '';
+        fetchProductDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error adding product discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function addCategoryDiscount() {
+      const category_id = document.getElementById('category-id').value;
+      const discount_percent = parseFloat(document.getElementById('category-discount-percent').value);
+      const starts_at = document.getElementById('category-starts-at').value ? new Date(document.getElementById('category-starts-at').value).toISOString() : null;
+      const ends_at = document.getElementById('category-ends-at').value ? new Date(document.getElementById('category-ends-at').value).toISOString() : null;
+      const errorElement = document.getElementById('error-message');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (!category_id || isNaN(discount_percent)) {
+        errorElement.textContent = 'Category ID and discount percent are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (starts_at && ends_at && new Date(starts_at) > new Date(ends_at)) {
+        errorElement.textContent = 'Start date must be before end date';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { category_id: parseInt(category_id), discount_percent };
+        if (starts_at) payload.starts_at = starts_at;
+        if (ends_at) payload.ends_at = ends_at;
+
+        const response = await fetch(`${API_BASE_URL}/category_discounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add category discount (Status: ${response.status})`);
+        }
+        document.getElementById('category-id').value = '';
+        document.getElementById('category-discount-percent').value = '';
+        document.getElementById('category-starts-at').value = '';
+        document.getElementById('category-ends-at').value = '';
+        fetchCategoryDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error adding category discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Edit Discounts
+    async function openEditGeneralModal(discountId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/discounts/${discountId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch discount (Status: ${response.status})`);
+        }
+        const discount = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit General Discount (ID: ${discountId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-general-code" class="block text-sm font-medium text-gray-700">Code</label>
+                <input id="edit-general-code" type="text" value="${discount.code}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-general-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent</label>
+                <input id="edit-general-discount-percent" type="number" step="0.1" min="0" max="100" value="${discount.discount_percent}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-general-max-uses" class="block text-sm font-medium text-gray-700">Max Uses</label>
+                <input id="edit-general-max-uses" type="number" min="0" value="${discount.max_uses || ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-general-expires-at" class="block text-sm font-medium text-gray-700">Expires At</label>
+                <input id="edit-general-expires-at" type="datetime-local" value="${discount.expires_at ? new Date(discount.expires_at).toISOString().slice(0,16) : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-general-description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="edit-general-description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">${discount.description || ''}</textarea>
+              </div>
+              <div>
+                <label for="edit-general-is-active" class="block text-sm font-medium text-gray-700">Active</label>
+                <select id="edit-general-is-active" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="1" ${discount.is_active ? 'selected' : ''}>Yes</option>
+                  <option value="0" ${!discount.is_active ? 'selected' : ''}>No</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <!-- MODIFICATION 1: Pass 'this' to the update function -->
+              <button onclick="updateGeneralDiscount(${discountId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit general modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openEditProductModal(discountId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/product_discounts/${discountId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch product discount (Status: ${response.status})`);
+        }
+        const discount = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Product Discount (ID: ${discountId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-product-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent</label>
+                <input id="edit-product-discount-percent" type="number" step="0.1" min="0" max="100" value="${discount.discount_percent}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-product-starts-at" class="block text-sm font-medium text-gray-700">Starts At</label>
+                <input id="edit-product-starts-at" type="datetime-local" value="${discount.starts_at ? new Date(discount.starts_at).toISOString().slice(0,16) : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-product-ends-at" class="block text-sm font-medium text-gray-700">Ends At</label>
+                <input id="edit-product-ends-at" type="datetime-local" value="${discount.ends_at ? new Date(discount.ends_at).toISOString().slice(0,16) : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-product-is-active" class="block text-sm font-medium text-gray-700">Active</label>
+                <select id="edit-product-is-active" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="1" ${discount.is_active ? 'selected' : ''}>Yes</option>
+                  <option value="0" ${!discount.is_active ? 'selected' : ''}>No</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <!-- MODIFICATION 1: Pass 'this' to the update function -->
+              <button onclick="updateProductDiscount(${discountId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit product modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openEditCategoryModal(discountId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/category_discounts/${discountId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch category discount (Status: ${response.status})`);
+        }
+        const discount = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Category Discount (ID: ${discountId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-category-id" class="block text-sm font-medium text-gray-700">Category ID</label>
+                <input id="edit-category-id" type="number" min="1" value="${discount.category_id}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-category-discount-percent" class="block text-sm font-medium text-gray-700">Discount Percent</label>
+                <input id="edit-category-discount-percent" type="number" step="0.1" min="0" max="100" value="${discount.discount_percent}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-category-starts-at" class="block text-sm font-medium text-gray-700">Starts At</label>
+                <input id="edit-category-starts-at" type="datetime-local" value="${discount.starts_at ? new Date(discount.starts_at).toISOString().slice(0,16) : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-category-ends-at" class="block text-sm font-medium text-gray-700">Ends At</label>
+                <input id="edit-category-ends-at" type="datetime-local" value="${discount.ends_at ? new Date(discount.ends_at).toISOString().slice(0,16) : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-category-is-active" class="block text-sm font-medium text-gray-700">Active</label>
+                <select id="edit-category-is-active" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="true" ${discount.is_active ? 'selected' : ''}>Yes</option>
+                  <option value="false" ${!discount.is_active ? 'selected' : ''}>No</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <!-- MODIFICATION 1: Pass 'this' to the update function -->
+              <button onclick="updateCategoryDiscount(${discountId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit category modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // MODIFICATION 2: Accept the buttonElement as a parameter
+    async function updateGeneralDiscount(discountId, buttonElement) {
+      const code = document.getElementById('edit-general-code').value;
+      const discount_percent = parseFloat(document.getElementById('edit-general-discount-percent').value);
+      const max_uses = document.getElementById('edit-general-max-uses').value || null;
+      const expires_at = document.getElementById('edit-general-expires-at').value ? new Date(document.getElementById('edit-general-expires-at').value).toISOString() : null;
+      const description = document.getElementById('edit-general-description').value || null;
+      const is_active = parseInt(document.getElementById('edit-general-is-active').value);
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(discount_percent)) {
+        errorElement.textContent = 'Discount percent is required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (max_uses && parseInt(max_uses) < 0) {
+        errorElement.textContent = 'Max uses must be non-negative';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { discount_percent, is_active };
+        if (code) payload.code = code;
+        if (max_uses) payload.max_uses = parseInt(max_uses);
+        if (expires_at) payload.expires_at = expires_at;
+        if (description) payload.description = description;
+
+        const response = await fetch(`${API_BASE_URL}/discounts/${discountId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update discount (Status: ${response.status})`);
+        }
+        // MODIFICATION 3: Use the specific selector to remove only the modal
+        buttonElement.closest('div.fixed').remove();
+        fetchGeneralDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating general discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // MODIFICATION 2: Accept the buttonElement as a parameter
+    async function updateProductDiscount(discountId, buttonElement) {
+      const discount_percent = parseFloat(document.getElementById('edit-product-discount-percent').value);
+      const starts_at = document.getElementById('edit-product-starts-at').value ? new Date(document.getElementById('edit-product-starts-at').value).toISOString() : null;
+      const ends_at = document.getElementById('edit-product-ends-at').value ? new Date(document.getElementById('edit-product-ends-at').value).toISOString() : null;
+      const is_active = parseInt(document.getElementById('edit-product-is-active').value);
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(discount_percent)) {
+        errorElement.textContent = 'Discount percent is required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (starts_at && ends_at && new Date(starts_at) > new Date(ends_at)) {
+        errorElement.textContent = 'Start date must be before end date';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { discount_percent, is_active };
+        if (starts_at) payload.starts_at = starts_at;
+        if (ends_at) payload.ends_at = ends_at;
+
+        const response = await fetch(`${API_BASE_URL}/product_discounts/${discountId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update product discount (Status: ${response.status})`);
+        }
+        // MODIFICATION 3: Use the specific selector to remove only the modal
+        buttonElement.closest('div.fixed').remove();
+        fetchProductDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating product discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // MODIFICATION 2: Accept the buttonElement as a parameter
+    async function updateCategoryDiscount(discountId, buttonElement) {
+      const category_id = parseInt(document.getElementById('edit-category-id').value);
+      const discount_percent = parseFloat(document.getElementById('edit-category-discount-percent').value);
+      const starts_at = document.getElementById('edit-category-starts-at').value ? new Date(document.getElementById('edit-category-starts-at').value).toISOString() : null;
+      const ends_at = document.getElementById('edit-category-ends-at').value ? new Date(document.getElementById('edit-category-ends-at').value).toISOString() : null;
+      const is_active = document.getElementById('edit-category-is-active').value === 'true';
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(category_id) || category_id < 1) {
+        errorElement.textContent = 'Category ID must be a positive integer';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (isNaN(discount_percent)) {
+        errorElement.textContent = 'Discount percent is required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (discount_percent < 0 || discount_percent > 100) {
+        errorElement.textContent = 'Discount percent must be between 0 and 100';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (starts_at && ends_at && new Date(starts_at) > new Date(ends_at)) {
+        errorElement.textContent = 'Start date must be before end date';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const payload = { category_id, discount_percent, is_active };
+        if (starts_at) payload.starts_at = starts_at;
+        if (ends_at) payload.ends_at = ends_at;
+
+        const response = await fetch(`${API_BASE_URL}/category_discounts/${discountId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update category discount (Status: ${response.status})`);
+        }
+        // MODIFICATION 3: Use the specific selector to remove only the modal
+        buttonElement.closest('div.fixed').remove();
+        fetchCategoryDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating category discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Delete Discounts
+    async function deleteGeneralDiscount(discountId) {
+      if (!confirm('Are you sure you want to delete this general discount?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/discounts/${discountId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete discount (Status: ${response.status})`);
+        }
+        fetchGeneralDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting general discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function deleteProductDiscount(discountId) {
+      if (!confirm('Are you sure you want to delete this product discount?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/product_discounts/${discountId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete product discount (Status: ${response.status})`);
+        }
+        fetchProductDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting product discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function deleteCategoryDiscount(discountId) {
+      if (!confirm('Are you sure you want to delete this category discount?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/category_discounts/${discountId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete category discount (Status: ${response.status})`);
+        }
+        fetchCategoryDiscounts();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting category discount:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function deleteDiscountUsage(usageId) {
+      if (!confirm('Are you sure you want to delete this discount usage?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/discount_usages/${usageId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete discount usage (Status: ${response.status})`);
+        }
+        fetchDiscountUsages();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting discount usage:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load data on page load
+    window.onload = () => {
+      fetchProducts();
+      fetchCategories();
+      fetchGeneralDiscounts();
+      document.getElementById('tab-product').addEventListener('click', fetchProductDiscounts);
+      document.getElementById('tab-category').addEventListener('click', fetchCategoryDiscounts);
+      document.getElementById('tab-usages').addEventListener('click', fetchDiscountUsages);
+    };
+  </script>
+</body>
+</html>

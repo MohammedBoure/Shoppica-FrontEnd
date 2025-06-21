@@ -1,120 +1,228 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <!-- Navbar -->
-  <nav class="bg-indigo-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
-      <div class="space-x-4">
-        <a href="./users.html" class="hover:underline">User Management</a>
-        <a href="./products.html" class="hover:underline">Product Management</a>
-        <a href="./orders.html" class="hover:underline">Order Management</a>
-        <a href="./reviews.html" class="hover:underline">Review Management</a>
-        <a href="./pos.html" class="hover:underline">Point of Sale</a>
-        <a href="./logout.html" class="hover:underline">Logout</a>
+  <!-- Sidebar -->
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
     </div>
-  </nav>
 
-  <!-- Main Content -->
-  <div class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-6">Platform Overview</h2>
-    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+      <!-- Hamburger Menu Button -->
+      <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 text-indigo-600 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
 
-    <!-- Metrics Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Total Sales</h3>
-        <p id="total-sales" class="text-2xl font-bold text-indigo-600">--</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Total Users</h3>
-        <p id="total-users" class="text-2xl font-bold text-indigo-600">--</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">New Orders</h3>
-        <p id="new-orders" class="text-2xl font-bold text-indigo-600">--</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Top Products</h3>
-        <p id="top-products" class="text-2xl font-bold text-indigo-600">--</p>
-      </div>
-    </div>
+      <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-6">Platform Overview</h2>
+        <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
 
-    <!-- Top Products Table -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-      <h3 class="text-lg font-semibold mb-4">Top-Selling Products</h3>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">Product Name</th>
-            <th class="px-4 py-2 text-left">Price</th>
-            <th class="px-4 py-2 text-left">Stock</th>
-            <th class="px-4 py-2 text-left">Created At</th>
-          </tr>
-        </thead>
-        <tbody id="products-table" class="divide-y divide-gray-200">
-          <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold">Total Sales</h3>
+            <p id="total-sales" class="text-2xl font-bold text-indigo-600">--</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold">Total Users</h3>
+            <p id="total-users" class="text-2xl font-bold text-indigo-600">--</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold">New Orders</h3>
+            <p id="new-orders" class="text-2xl font-bold text-indigo-600">--</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold">Top Products</h3>
+            <p id="top-products" class="text-2xl font-bold text-indigo-600">--</p>
+          </div>
+        </div>
 
-    <!-- Recent Reviews -->
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <h3 class="text-lg font-semibold mb-4">Recent Reviews</h3>
-      <div id="reviews-list" class="space-y-4">
-        <p class="text-center">Loading...</p>
+        <!-- Top Products Table -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+          <h3 class="text-lg font-semibold mb-4">Top-Selling Products</h3>
+          <table class="w-full table-auto">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="px-4 py-2 text-left">Product Name</th>
+                <th class="px-4 py-2 text-left">Price</th>
+                <th class="px-4 py-2 text-left">Stock</th>
+                <th class="px-4 py-2 text-left">Created At</th>
+              </tr>
+            </thead>
+            <tbody id="products-table" class="divide-y divide-gray-200">
+              <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold mb-4">Recent Reviews</h3>
+          <div id="reviews-list" class="space-y-4">
+            <p class="text-center">Loading...</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
     const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    // Submenu Toggle
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
 
     async function fetchData() {
       const errorElement = document.getElementById('error-message');

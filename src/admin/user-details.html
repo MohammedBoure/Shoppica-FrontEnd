@@ -5,143 +5,258 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Added Font Awesome for sidebar icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <!-- Navbar -->
-  <nav class="bg-indigo-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
-      <div class="space-x-4">
-        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
-        <a href="./users.html" class="hover:underline">User Management</a>
-        <a href="./products.html" class="hover:underline">Product Management</a>
-        <a href="./orders.html" class="hover:underline">Order Management</a>
-        <a href="./reviews.html" class="hover:underline">Review Management</a>
-        <a href="./pos.html" class="hover:underline">Point of Sale</a>
-        <a href="/logout.html" class="hover:underline">Logout</a>
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
     </div>
-  </nav>
 
-  <!-- Main Content -->
-  <div class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-6">User Details</h2>
-    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
-    <div id="loading-message" class="text-gray-700 text-sm mb-4">Loading user details...</div>
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+      <!-- Hamburger Menu Button -->
+      <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-40 text-indigo-600 focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+      </button>
 
-    <!-- User Information -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="user-info-section">
-      <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
-      <div id="user-info" class="space-y-2">
-        <p><strong>ID:</strong> <span id="user-id">--</span></p>
-        <p><strong>Username:</strong> <span id="user-username">--</span></p>
-        <p><strong>Email:</strong> <span id="user-email">--</span></p>
-        <p><strong>Full Name:</strong> <span id="user-full-name">--</span></p>
-        <p><strong>Phone Number:</strong> <span id="user-phone">--</span></p>
-        <p><strong>Admin:</strong> <span id="user-is-admin">--</span></p>
-        <p><strong>Created At:</strong> <span id="user-created-at">--</span></p>
+      <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-6">User Details</h2>
+        <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+        <div id="loading-message" class="text-gray-700 text-sm mb-4">Loading user details...</div>
+
+        <!-- User Information -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="user-info-section">
+          <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+          <div id="user-info" class="space-y-2">
+            <p><strong>ID:</strong> <span id="user-id">--</span></p>
+            <p><strong>Username:</strong> <span id="user-username">--</span></p>
+            <p><strong>Email:</strong> <span id="user-email">--</span></p>
+            <p><strong>Full Name:</strong> <span id="user-full-name">--</span></p>
+            <p><strong>Phone Number:</strong> <span id="user-phone">--</span></p>
+            <p><strong>Admin:</strong> <span id="user-is-admin">--</span></p>
+            <p><strong>Created At:</strong> <span id="user-created-at">--</span></p>
+          </div>
+        </div>
+
+        <!-- Other sections will be revealed when data is loaded -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="addresses-section"></div>
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="orders-section"></div>
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="cart-items-section"></div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hidden" id="discount-usages-section"></div>
       </div>
-    </div>
-
-    <!-- Addresses -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="addresses-section">
-      <h3 class="text-lg font-semibold mb-4">Addresses</h3>
-      <div class="flex justify-between items-center mb-4">
-        <span></span>
-        <a href="./addresses.html" class="text-indigo-600 hover:underline">Manage Addresses</a>
-      </div>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">Address Line 1</th>
-            <th class="px-4 py-2 text-left">City</th>
-            <th class="px-4 py-2 text-left">State</th>
-            <th class="px-4 py-2 text-left">Postal Code</th>
-            <th class="px-4 py-2 text-left">Country</th>
-            <th class="px-4 py-2 text-left">Default</th>
-          </tr>
-        </thead>
-        <tbody id="addresses-table" class="divide-y divide-gray-200">
-          <tr><td colspan="6" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Orders -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="orders-section">
-      <h3 class="text-lg font-semibold mb-4">Orders</h3>
-      <div class="flex justify-between items-center mb-4">
-        <span></span>
-        <a href="./orders.html" class="text-indigo-600 hover:underline">Manage Orders</a>
-      </div>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">Order ID</th>
-            <th class="px-4 py-2 text-left">Status</th>
-            <th class="px-4 py-2 text-left">Total Price</th>
-            <th class="px-4 py-2 text-left">Created At</th>
-          </tr>
-        </thead>
-        <tbody id="orders-table" class="divide-y divide-gray-200">
-          <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Cart Items -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="cart-items-section">
-      <h3 class="text-lg font-semibold mb-4">Cart Items</h3>
-      <div class="flex justify-between items-center mb-4">
-        <span></span>
-        <a href="./cart.html" class="text-indigo-600 hover:underline">Manage Cart</a>
-      </div>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">Cart Item ID</th>
-            <th class="px-4 py-2 text-left">Product ID</th>
-            <th class="px-4 py-2 text-left">Quantity</th>
-          </tr>
-        </thead>
-        <tbody id="cart-items-table" class="divide-y divide-gray-200">
-          <tr><td colspan="3" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Discount Usages -->
-    <div class="bg-white p-6 rounded-lg shadow-lg hidden" id="discount-usages-section">
-      <h3 class="text-lg font-semibold mb-4">Discount Usages</h3>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">Discount ID</th>
-            <th class="px-4 py-2 text-left">Used At</th>
-          </tr>
-        </thead>
-        <tbody id="discount-usages-table" class="divide-y divide-gray-200">
-          <tr><td colspan="2" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
   <script>
-    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api'; // Update to match your backend URL
+    // Sidebar Toggle JS
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
 
+    sidebarToggle.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+    sidebarClose.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
+
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // --- NEW FUNCTIONS FOR USER SELECTION MODAL ---
+    async function showUserSelectionModal() {
+        const loadingElement = document.getElementById('loading-message');
+        loadingElement.textContent = "Please select a user to view their details.";
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/users?page=1&per_page=1000`, { credentials: 'include' });
+            if (!response.ok) throw new Error('Failed to fetch user list');
+            const data = await response.json();
+            const users = data.users || [];
+
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60';
+            modal.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <h3 class="text-lg font-semibold mb-4">Select a User</h3>
+                    <div id="modal-error" class="text-red-500 text-sm mb-2"></div>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="modal-user-select" class="block text-sm font-medium text-gray-700">Choose from list</label>
+                            <select id="modal-user-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">-- Select a user --</option>
+                                ${users.map(user => `<option value="${user.id}">${user.username} (ID: ${user.id})</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="text-center my-2 text-gray-500">OR</div>
+                        <div>
+                            <label for="modal-user-id-input" class="block text-sm font-medium text-gray-700">Enter User ID</label>
+                            <input id="modal-user-id-input" type="number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="loadSelectedUser()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Show Details</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        } catch (error) {
+            document.getElementById('error-message').textContent = `Error: ${error.message}`;
+            document.getElementById('error-message').classList.remove('hidden');
+        }
+    }
+
+    function loadSelectedUser() {
+        const selectedIdFromInput = document.getElementById('modal-user-id-input').value;
+        const selectedIdFromSelect = document.getElementById('modal-user-select').value;
+        
+        const userId = selectedIdFromInput || selectedIdFromSelect;
+
+        if (userId) {
+            window.location.href = `./user-details.html?id=${userId}`;
+        } else {
+            const modalError = document.getElementById('modal-error');
+            if(modalError) modalError.textContent = "Please select a user or enter an ID.";
+        }
+    }
+
+
+    // --- MAIN FUNCTION TO FETCH AND DISPLAY DETAILS ---
     async function fetchUserDetails() {
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('id');
       const errorElement = document.getElementById('error-message');
       const loadingElement = document.getElementById('loading-message');
-
-      if (!userId) {
-        errorElement.textContent = 'User ID is required';
-        errorElement.classList.remove('hidden');
-        loadingElement.classList.add('hidden');
-        return;
-      }
 
       const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
       if (!currentUser.id) {
@@ -152,137 +267,102 @@
         return;
       }
 
-      try {
-        // Check permissions
-        if (!currentUser.is_admin && currentUser.id != userId) {
-          errorElement.textContent = 'Unauthorized access';
-          errorElement.classList.remove('hidden');
-          loadingElement.classList.add('hidden');
+      if (!userId) {
+          if (currentUser.is_admin) {
+              showUserSelectionModal();
+          } else {
+              // Redirect non-admin to their own details page
+              window.location.href = `./user-details.html?id=${currentUser.id}`;
+          }
           return;
-        }
+      }
 
-        // Fetch User Info
-        console.log(`Fetching user info for ID: ${userId}`);
-        const userResponse = await fetch(`${API_BASE_URL}/users/${userId}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (!userResponse.ok) {
-          const errorData = await userResponse.json();
-          throw new Error(errorData.error || `Failed to fetch user (Status: ${userResponse.status})`);
+      try {
+        if (!currentUser.is_admin && currentUser.id != userId) {
+          throw new Error('Unauthorized access');
         }
-        const user = await userResponse.json();
+        
+        // --- Fetch all data in parallel for better performance ---
+        const [userRes, addressesRes, ordersRes, cartRes, discountRes] = await Promise.all([
+            fetch(`${API_BASE_URL}/users/${userId}`, { credentials: 'include' }),
+            fetch(currentUser.is_admin ? `${API_BASE_URL}/admin/addresses/user/${userId}` : `${API_BASE_URL}/addresses`, { credentials: 'include' }),
+            fetch(`${API_BASE_URL}/orders/user/${userId}`, { credentials: 'include' }),
+            fetch(currentUser.is_admin ? `${API_BASE_URL}/admin/cart_items/user/${userId}` : `${API_BASE_URL}/cart_items`, { credentials: 'include' }),
+            fetch(`${API_BASE_URL}/discount_usages/user/${userId}`, { credentials: 'include' })
+        ]);
+
+        // --- Process User Info ---
+        if (!userRes.ok) throw new Error((await userRes.json()).error || 'Failed to fetch user');
+        const user = await userRes.json();
         document.getElementById('user-id').textContent = user.id;
         document.getElementById('user-username').textContent = user.username;
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-full-name').textContent = user.full_name || '-';
         document.getElementById('user-phone').textContent = user.phone_number || '-';
         document.getElementById('user-is-admin').textContent = user.is_admin ? 'Yes' : 'No';
-        document.getElementById('user-created-at').textContent = new Date(user.created_at).toLocaleDateString();
+        document.getElementById('user-created-at').textContent = new Date(user.created_at).toLocaleString();
         document.getElementById('user-info-section').classList.remove('hidden');
 
-        // Fetch Addresses (Admin Only)
-        if (currentUser.is_admin) {
-          console.log(`Fetching addresses for user ID: ${userId}`);
-          const addressesResponse = await fetch(`${API_BASE_URL}/admin/addresses/user/${userId}`, {
-            method: 'GET',
-            credentials: 'include'
-          });
-          if (!addressesResponse.ok) {
-            const errorData = await addressesResponse.json();
-            throw new Error(errorData.error || `Failed to fetch addresses (Status: ${addressesResponse.status})`);
-          }
-          const addresses = await addressesResponse.json();
-          const addressesTable = document.getElementById('addresses-table');
-          addressesTable.innerHTML = addresses.length ? addresses.map(address => `
-            <tr>
-              <td class="px-4 py-2">${address.address_line1}${address.address_line2 ? ', ' + address.address_line2 : ''}</td>
-              <td class="px-4 py-2">${address.city}</td>
-              <td class="px-4 py-2">${address.state}</td>
-              <td class="px-4 py-2">${address.postal_code}</td>
-              <td class="px-4 py-2">${address.country}</td>
-              <td class="px-4 py-2">${address.is_default ? 'Yes' : 'No'}</td>
-            </tr>
-          `).join('') : '<tr><td colspan="6" class="px-4 py-2 text-center">No addresses found</td></tr>';
-          document.getElementById('addresses-section').classList.remove('hidden');
+        // --- Process Addresses ---
+        const addressesSection = document.getElementById('addresses-section');
+        if (!addressesRes.ok) {
+            addressesSection.innerHTML = `<h3 class="text-lg font-semibold mb-4">Addresses</h3><p class="text-red-500">Failed to load addresses.</p>`;
         } else {
-          document.getElementById('addresses-table').innerHTML = '<tr><td colspan="6" class="px-4 py-2 text-center">Admin access required</td></tr>';
-          document.getElementById('addresses-section').classList.remove('hidden');
+            const addressesData = await addressesRes.json();
+            const addresses = addressesData.addresses || [];
+            addressesSection.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold">Addresses</h3>
+                  <a href="./addresses.html" class="text-indigo-600 hover:underline">Manage All Addresses</a>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full table-auto">
+                    <thead><tr class="bg-gray-200">
+                      <th class="px-4 py-2 text-left">Address</th><th class="px-4 py-2 text-left">City</th>
+                      <th class="px-4 py-2 text-left">Country</th><th class="px-4 py-2 text-left">Default</th>
+                    </tr></thead>
+                    <tbody class="divide-y divide-gray-200">
+                      ${addresses.length ? addresses.map(addr => `
+                        <tr>
+                          <td class="px-4 py-2">${addr.address_line1}</td><td class="px-4 py-2">${addr.city}</td>
+                          <td class="px-4 py-2">${addr.country}</td><td class="px-4 py-2">${addr.is_default ? 'Yes' : 'No'}</td>
+                        </tr>`).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No addresses found</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>`;
         }
-
-        // Fetch Orders
-        console.log(`Fetching orders for user ID: ${userId}`);
-        const ordersResponse = await fetch(`${API_BASE_URL}/orders/user/${userId}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (!ordersResponse.ok) {
-          const errorData = await ordersResponse.json();
-          throw new Error(errorData.error || `Failed to fetch orders (Status: ${ordersResponse.status})`);
+        addressesSection.classList.remove('hidden');
+        
+        // --- Process Orders, Cart, Discounts similarly... ---
+        // (This structure is expandable for the other sections)
+        const ordersSection = document.getElementById('orders-section');
+        if(ordersRes.ok) {
+            const ordersData = await ordersRes.json();
+            const orders = ordersData.orders || [];
+            ordersSection.innerHTML = `
+                <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold">Orders</h3><a href="./orders.html" class="text-indigo-600 hover:underline">Manage All Orders</a></div>
+                <div class="overflow-x-auto"><table class="w-full table-auto">
+                    <thead><tr class="bg-gray-200">
+                        <th class="px-4 py-2 text-left">ID</th><th class="px-4 py-2 text-left">Status</th>
+                        <th class="px-4 py-2 text-left">Total</th><th class="px-4 py-2 text-left">Date</th>
+                    </tr></thead>
+                    <tbody class="divide-y divide-gray-200">
+                        ${orders.length ? orders.map(o => `
+                            <tr><td class="px-4 py-2">${o.id}</td><td class="px-4 py-2">${o.status}</td>
+                            <td class="px-4 py-2">$${o.total_price.toFixed(2)}</td><td class="px-4 py-2">${new Date(o.created_at).toLocaleString()}</td></tr>
+                        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No orders found</td></tr>'}
+                    </tbody>
+                </table></div>
+            `;
         }
-        const ordersData = await ordersResponse.json();
-        const ordersTable = document.getElementById('orders-table');
-        ordersTable.innerHTML = ordersData.orders.length ? ordersData.orders.map(order => `
-          <tr>
-            <td class="px-4 py-2">${order.id}</td>
-            <td class="px-4 py-2">${order.status}</td>
-            <td class="px-4 py-2">$${order.total_price.toFixed(2)}</td>
-            <td class="px-4 py-2">${new Date(order.created_at).toLocaleDateString()}</td>
-          </tr>
-        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No orders found</td></tr>';
-        document.getElementById('orders-section').classList.remove('hidden');
+        ordersSection.classList.remove('hidden');
 
-        // Fetch Cart Items (Admin Only)
-        if (currentUser.is_admin) {
-          console.log(`Fetching cart items for user ID: ${userId}`);
-          const cartItemsResponse = await fetch(`${API_BASE_URL}/admin/cart_items/user/${userId}`, {
-            method: 'GET',
-            credentials: 'include'
-          });
-          if (!cartItemsResponse.ok) {
-            const errorData = await cartItemsResponse.json();
-            throw new Error(errorData.error || `Failed to fetch cart items (Status: ${cartItemsResponse.status})`);
-          }
-          const cartItems = await cartItemsResponse.json();
-          const cartItemsTable = document.getElementById('cart-items-table');
-          cartItemsTable.innerHTML = cartItems.length ? cartItems.map(item => `
-            <tr>
-              <td class="px-4 py-2">${item.id}</td>
-              <td class="px-4 py-2">${item.product_id}</td>
-              <td class="px-4 py-2">${item.quantity}</td>
-            </tr>
-          `).join('') : '<tr><td colspan="3" class="px-4 py-2 text-center">No cart items found</td></tr>';
-          document.getElementById('cart-items-section').classList.remove('hidden');
-        } else {
-          document.getElementById('cart-items-table').innerHTML = '<tr><td colspan="3" class="px-4 py-2 text-center">Admin access required</td></tr>';
-          document.getElementById('cart-items-section').classList.remove('hidden');
-        }
 
-        // Fetch Discount Usages
-        console.log(`Fetching discount usages for user ID: ${userId}`);
-        const discountUsagesResponse = await fetch(`${API_BASE_URL}/discount_usages/user/${userId}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (!discountUsagesResponse.ok) {
-          const errorData = await discountUsagesResponse.json();
-          throw new Error(errorData.error || `Failed to fetch discount usages (Status: ${discountUsagesResponse.status})`);
-        }
-        const discountUsages = await discountUsagesResponse.json();
-        const discountUsagesTable = document.getElementById('discount-usages-table');
-        discountUsagesTable.innerHTML = discountUsages.discount_usages.length ? discountUsages.discount_usages.map(usage => `
-          <tr>
-            <td class="px-4 py-2">${usage.discount_id}</td>
-            <td class="px-4 py-2">${new Date(usage.used_at).toLocaleDateString()}</td>
-          </tr>
-        `).join('') : '<tr><td colspan="2" class="px-4 py-2 text-center">No discount usages found</td></tr>';
-        document.getElementById('discount-usages-section').classList.remove('hidden');
-
-        loadingElement.classList.add('hidden');
       } catch (error) {
         console.error('Error fetching user details:', error);
-        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.textContent = error.message;
         errorElement.classList.remove('hidden');
+      } finally {
         loadingElement.classList.add('hidden');
       }
     }

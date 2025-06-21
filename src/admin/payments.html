@@ -5,203 +5,306 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <!-- Navbar -->
-  <nav class="bg-indigo-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
-      <div class="space-x-4">
-        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
-        <a href="./users.html" class="hover:underline">User Details</a>
-        <a href="./categories.html" class="hover:underline">Category Management</a>
-        <a href="./products.html" class="hover:underline">Product Management</a>
-        <a href="./product-discounts.html" class="hover:underline">Product Discount Management</a>
-        <a href="./reviews.html" class="hover:underline">Review Management</a>
-        <a href="./orders.html" class="hover:underline">Order Management</a>
-        <a href="./pos.html" class="hover:underline">Point of Sale</a>
-        <a href="/logout.html" class="hover:underline">Logout</a>
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 bg-indigo-800 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
     </div>
-  </nav>
 
-  <!-- Main Content -->
-  <div class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-6">Payment Management</h2>
-    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
-    <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading payments...</div>
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+        <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-40 text-indigo-600 focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
 
-    <!-- Filter by Order -->
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-      <h3 class="text-lg font-semibold mb-4">Filter Payments by Order</h3>
-      <div class="flex space-x-4">
-        <input id="filter-order-id" type="number" min="1" placeholder="Enter Order ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-        <button onclick="debouncedFilterPaymentsByOrder()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Filter</button>
-      </div>
-    </div>
+        <div class="container mx-auto p-6">
+            <h2 class="text-2xl font-bold mb-6">Payment Management</h2>
+            <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+            <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading payments...</div>
 
-    <!-- Payments Table -->
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <h3 class="text-lg font-semibold mb-4">All Payments</h3>
-      <table class="w-full table-auto">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2 text-left">ID</th>
-            <th class="px-4 py-2 text-left">Order ID</th>
-            <th class="px-4 py-2 text-left">Payment Method</th>
-            <th class="px-4 py-2 text-left">Payment Status</th>
-            <th class="px-4 py-2 text-left">Transaction ID</th>
-            <th class="px-4 py-2 text-left">Paid At</th>
-            <th class="px-4 py-2 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="payments-table" class="divide-y divide-gray-200">
-          <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
-        </tbody>
-      </table>
+            <!-- Filter by Order -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+              <h3 class="text-lg font-semibold mb-4">Filter Payments by Order</h3>
+              <div class="flex space-x-4">
+                  <input id="filter-order-id" type="number" min="1" placeholder="Enter Order ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <button onclick="filterPaymentsByOrder()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Filter</button>
+                  <!-- IMPROVEMENT: Added a clear button -->
+                  <button onclick="clearFilter()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Clear</button>
+              </div>
+            </div>
+
+            <!-- Payments Table -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-lg font-semibold mb-4">All Payments</h3>
+              <table class="w-full table-auto">
+                  <thead>
+                  <tr class="bg-gray-200">
+                      <th class="px-4 py-2 text-left">ID</th>
+                      <th class="px-4 py-2 text-left">Order ID</th>
+                      <th class="px-4 py-2 text-left">Method</th>
+                      <th class="px-4 py-2 text-left">Status</th>
+                      <th class="px-4 py-2 text-left">Transaction ID</th>
+                      <th class="px-4 py-2 text-left">Paid At</th>
+                      <th class="px-4 py-2 text-left">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody id="payments-table" class="divide-y divide-gray-200">
+                    <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+                  </tbody>
+              </table>
+            </div>
+        </div>
     </div>
   </div>
 
   <script>
+    // Sidebar Toggle JS
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    // Submenu Toggle JS
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
+
     const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
 
-    // Debounce function to prevent rapid API calls
-    function debounce(func, wait) {
-      let timeout;
-      return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
-    }
-
-    async function fetchPayments(orderId = '') {
+    async function fetchPayments(orderId = null) {
       const errorElement = document.getElementById('error-message');
       const loadingElement = document.getElementById('loading-message');
       const paymentsTable = document.getElementById('payments-table');
 
       loadingElement.classList.remove('hidden');
       errorElement.classList.add('hidden');
-      paymentsTable.innerHTML = ''; // Clear the table
+      paymentsTable.innerHTML = '<tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>';
 
       try {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        
-        // Validate orderId
-        const parsedOrderId = orderId && !isNaN(orderId) && orderId.trim() !== '' ? parseInt(orderId) : null;
+        let url = `${API_BASE_URL}/payments?page=1&per_page=20`;
 
-        // Build the URL
-        let url = parsedOrderId 
-          ? `${API_BASE_URL}/payments/order/${parsedOrderId}` 
-          : `${API_BASE_URL}/payments?page=1&per_page=20`;
-
-        if (!parsedOrderId && !user.is_admin) {
-          throw new Error('Admin privileges required to view all payments');
+        if (orderId) {
+          url = `${API_BASE_URL}/payments/order/${orderId}`;
+        } else if (!user.is_admin) {
+          throw new Error('Admin privileges are required to view all payments.');
         }
 
-        const response = await fetch(url, {
-          method: 'GET',
-          credentials: 'include'
-        });
-
+        const response = await fetch(url, { method: 'GET', credentials: 'include' });
         if (!response.ok) {
-          let errorData;
-          try {
-            errorData = await response.json();
-          } catch {
-            errorData = { error: `Failed to fetch payments (Status: ${response.status})` };
-          }
+          const errorData = await response.json().catch(() => ({ error: `Request failed with status ${response.status}` }));
           throw new Error(errorData.error);
         }
 
         const data = await response.json();
-        const payments = parsedOrderId ? data.payments || [] : data.payments || [];
+        const payments = data.payments || (Array.isArray(data) ? data : []);
 
-        paymentsTable.innerHTML = payments.length ? payments.map(payment => `
+        paymentsTable.innerHTML = payments.length ? payments.map(p => `
           <tr>
-            <td class="px-4 py-2">${payment.id}</td>
-            <td class="px-4 py-2">${payment.order_id}</td>
-            <td class="px-4 py-2">${payment.payment_method}</td>
-            <td class="px-4 py-2">${payment.payment_status}</td>
-            <td class="px-4 py-2">${payment.transaction_id || '-'}</td>
-            <td class="px-4 py-2">${payment.paid_at ? new Date(payment.paid_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2">${p.id}</td>
+            <td class="px-4 py-2">${p.order_id}</td>
+            <td class="px-4 py-2">${p.payment_method}</td>
+            <td class="px-4 py-2">${p.payment_status}</td>
+            <td class="px-4 py-2">${p.transaction_id || '-'}</td>
+            <td class="px-4 py-2">${p.paid_at ? new Date(p.paid_at).toLocaleString() : '-'}</td>
             <td class="px-4 py-2 space-x-2">
-              <button onclick="openEditModal(${payment.id})" class="text-indigo-600 hover:underline">Edit</button>
-              <button onclick="deletePayment(${payment.id})" class="text-red-600 hover:underline">Delete</button>
+              <button onclick="openEditModal(${p.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deletePayment(${p.id})" class="text-red-600 hover:underline">Delete</button>
             </td>
           </tr>
-        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No payments found</td></tr>';
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No payments found.</td></tr>';
 
       } catch (error) {
         console.error('Error fetching payments:', error);
-        errorElement.textContent = error.message || 'An error occurred while fetching payments.';
+        errorElement.textContent = error.message;
         errorElement.classList.remove('hidden');
+        paymentsTable.innerHTML = `<tr><td colspan="7" class="px-4 py-2 text-center text-red-500">${error.message}</td></tr>`;
       } finally {
         loadingElement.classList.add('hidden');
       }
     }
 
-    async function filterPaymentsByOrder() {
+    function filterPaymentsByOrder() {
       const orderIdInput = document.getElementById('filter-order-id').value;
-      console.log('Order ID input:', orderIdInput); // For debugging
-      const orderId = orderIdInput && !isNaN(orderIdInput) && orderIdInput.trim() !== '' ? parseInt(orderIdInput) : '';
-      fetchPayments(orderId);
+      fetchPayments(orderIdInput.trim() ? parseInt(orderIdInput) : null);
     }
-
-    // Debounced version of filterPaymentsByOrder
-    const debouncedFilterPaymentsByOrder = debounce(filterPaymentsByOrder, 300);
+    
+    // IMPROVEMENT: Added clear function
+    function clearFilter() {
+        document.getElementById('filter-order-id').value = '';
+        fetchPayments();
+    }
 
     async function deletePayment(paymentId) {
       if (!confirm('Are you sure you want to delete this payment?')) return;
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const errorElement = document.getElementById('error-message');
-
-      if (!user.is_admin) {
-        errorElement.textContent = 'Admin privileges required';
-        errorElement.classList.remove('hidden');
+      if (!JSON.parse(localStorage.getItem('user') || '{}').is_admin) {
+        alert('Admin privileges required.');
         return;
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
-          method: 'DELETE',
-          credentials: 'include'
-        });
+        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, { method: 'DELETE', credentials: 'include' });
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to delete payment (Status: ${response.status})`);
+          throw new Error(errorData.error || 'Failed to delete payment');
         }
-        fetchPayments();
-        errorElement.classList.add('hidden');
+        filterPaymentsByOrder(); // Refetch with current filter
       } catch (error) {
         console.error('Error deleting payment:', error);
-        errorElement.textContent = error.message || 'An error occurred';
-        errorElement.classList.remove('hidden');
+        alert(error.message);
       }
     }
 
     async function openEditModal(paymentId) {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const errorElement = document.getElementById('error-message');
-
-      if (!user.is_admin) {
-        errorElement.textContent = 'Admin privileges required';
-        errorElement.classList.remove('hidden');
+      if (!JSON.parse(localStorage.getItem('user') || '{}').is_admin) {
+        alert('Admin privileges required.');
         return;
       }
-
       try {
-        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to fetch payment (Status: ${response.status})`);
-        }
+        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, { credentials: 'include' });
+        if (!response.ok) throw new Error('Failed to fetch payment details');
         const payment = await response.json();
 
         const modal = document.createElement('div');
-        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
         modal.innerHTML = `
           <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h3 class="text-lg font-semibold mb-4">Edit Payment (ID: ${paymentId})</h3>
@@ -212,6 +315,7 @@
                   <option value="credit_card" ${payment.payment_method === 'credit_card' ? 'selected' : ''}>Credit Card</option>
                   <option value="paypal" ${payment.payment_method === 'paypal' ? 'selected' : ''}>PayPal</option>
                   <option value="bank_transfer" ${payment.payment_method === 'bank_transfer' ? 'selected' : ''}>Bank Transfer</option>
+                  <option value="cash" ${payment.payment_method === 'cash' ? 'selected' : ''}>Cash</option>
                 </select>
               </div>
               <div>
@@ -229,28 +333,27 @@
             </div>
             <div class="mt-4 flex justify-end space-x-2">
               <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
-              <button onclick="updatePayment(${paymentId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+              <!-- CORRECTED: Pass 'this' to the update function -->
+              <button onclick="updatePayment(${paymentId}, this)" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
             </div>
           </div>
         `;
         document.body.appendChild(modal);
       } catch (error) {
         console.error('Error opening edit modal:', error);
-        errorElement.textContent = error.message || 'An error occurred';
-        errorElement.classList.remove('hidden');
+        alert(error.message);
       }
     }
 
-    async function updatePayment(paymentId) {
-      const payment_method = document.getElementById('edit-payment-method').value;
-      const payment_status = document.getElementById('edit-payment-status').value;
-      const transaction_id = document.getElementById('edit-transaction-id').value || null;
-      const errorElement = document.getElementById('error-message');
+    // CORRECTED: Accept the button element as a parameter
+    async function updatePayment(paymentId, buttonElement) {
+      const payload = {
+        payment_method: document.getElementById('edit-payment-method').value,
+        payment_status: document.getElementById('edit-payment-status').value,
+        transaction_id: document.getElementById('edit-transaction-id').value || null
+      };
 
       try {
-        const payload = { payment_method, payment_status };
-        if (transaction_id) payload.transaction_id = transaction_id;
-
         const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -259,20 +362,25 @@
         });
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || `Failed to update payment (Status: ${response.status})`);
+          throw new Error(errorData.error || 'Failed to update payment');
         }
-        document.querySelector('div.fixed').remove();
-        fetchPayments();
-        errorElement.classList.add('hidden');
+        // CORRECTED: Use the button element to remove the correct modal
+        buttonElement.closest('.fixed').remove();
+        filterPaymentsByOrder(); // Refetch with current filter
       } catch (error) {
         console.error('Error updating payment:', error);
-        errorElement.textContent = error.message || 'An error occurred';
-        errorElement.classList.remove('hidden');
+        alert(error.message);
       }
     }
 
     // Load payments on page load
-    window.onload = fetchPayments;
+    window.onload = () => {
+        if (JSON.parse(localStorage.getItem('user') || '{}').is_admin) {
+            fetchPayments();
+        } else {
+            document.getElementById('payments-table').innerHTML = `<tr><td colspan="7" class="px-4 py-2 text-center text-red-500">Admin privileges required to view payments.</td></tr>`;
+        }
+    };
   </script>
 </body>
 </html>

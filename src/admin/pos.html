@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Point of Sale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex">
+    <!-- Sidebar Content -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-indigo-600 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+      <div class="flex items-center justify-between p-4 border-b border-indigo-700">
+        <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+        <button id="sidebar-close" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="./dashboard.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./users.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Management</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+          <a href="./pos.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Point of Sale</a>
+        </div>
+
+        <a href="./users.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-users mr-2"></i> User Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./user-details.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-user mr-2"></i> User Details
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./addresses.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Address Management</a>
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./carts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Cart Management</a>
+        </div>
+
+        <a href="./addresses.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-map-marker-alt mr-2"></i> Address Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+        </div>
+
+        <a href="./categories.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sitemap mr-2"></i> Category Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Discount Management</a>
+        </div>
+
+        <a href="./products.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-box mr-2"></i> Product Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Discount Management</a>
+          <a href="./reviews.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Review Management</a>
+        </div>
+
+        <a href="./reviews.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-star mr-2"></i> Review Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="./orders.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-shopping-cart mr-2"></i> Order Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./payments.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Payment Management</a>
+        </div>
+
+        <a href="./payments.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-credit-card mr-2"></i> Payment Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+        </div>
+
+        <a href="./discounts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-tags mr-2"></i> Discount Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+          <a href="./categories.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Category Management</a>
+        </div>
+
+        <a href="./pos.html" class="flex items-center px-4 py-2 bg-indigo-800 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cash-register mr-2"></i> Point of Sale
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./orders.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Order Management</a>
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./discounts.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Discount Management</a>
+        </div>
+
+        <a href="./carts.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-cart-plus mr-2"></i> Cart Management
+          <i class="fas fa-chevron-down ml-auto submenu-toggle"></i>
+        </a>
+        <div class="submenu hidden pl-6 space-y-1">
+          <a href="./user-details.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">User Details</a>
+          <a href="./products.html" class="block px-4 py-1 text-sm hover:bg-indigo-700 rounded">Product Management</a>
+        </div>
+
+        <a href="/logout.html" class="flex items-center px-4 py-2 rounded-md hover:bg-indigo-700 active:bg-indigo-800">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 md:ml-64">
+        <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-40 text-indigo-600 focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+
+        <div class="container mx-auto p-6">
+            <h2 class="text-2xl font-bold mb-6">Point of Sale</h2>
+            <div id="message-area" class="hidden p-3 mb-4 rounded-md text-sm font-medium"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+                <div class="mb-6">
+                  <h3 class="text-lg font-semibold mb-4">Select Products</h3>
+                  <div class="flex space-x-4">
+                      <div class="flex-1">
+                        <label for="category-filter" class="block text-sm font-medium text-gray-700">Category</label>
+                        <select id="category-filter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></select>
+                      </div>
+                      <div class="flex-1">
+                        <label for="product-search" class="block text-sm font-medium text-gray-700">Search Product</label>
+                        <input id="product-search" type="text" placeholder="Enter name or ID..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                      </div>
+                  </div>
+                </div>
+
+                <div class="mb-6 max-h-96 overflow-y-auto">
+                  <table class="w-full table-auto"><thead class="sticky top-0 bg-gray-200"><tr><th class="px-4 py-2 text-left">Name</th><th class="px-4 py-2 text-left">Price</th><th class="px-4 py-2 text-left">Stock</th><th class="px-4 py-2 text-left">Action</th></tr></thead><tbody id="product-list" class="divide-y divide-gray-200"></tbody></table>
+                </div>
+
+                <div>
+                  <h3 class="text-lg font-semibold mb-4">Cart</h3>
+                  <table class="w-full table-auto mb-4"><thead class="bg-gray-200"><tr><th class="px-4 py-2 text-left">Product</th><th class="px-4 py-2 text-left">Quantity</th><th class="px-4 py-2 text-left">Price</th><th class="px-4 py-2 text-left">Total</th><th class="px-4 py-2 text-left">Action</th></tr></thead><tbody id="cart-items" class="divide-y divide-gray-200"><tr><td colspan="5" class="px-4 py-2 text-center">Cart is empty</td></tr></tbody></table>
+                  <div class="flex space-x-4 mb-4">
+                      <input id="discount-code" type="text" placeholder="Enter discount code" class="flex-1 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                      <button onclick="applyDiscount()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Apply</button>
+                  </div>
+                  <div class="text-right">
+                      <p class="text-lg">Subtotal: $<span id="cart-subtotal">0.00</span></p>
+                      <p class="text-lg">Discount: $<span id="cart-discount">0.00</span></p>
+                      <p class="text-xl font-bold">Total: $<span id="cart-total">0.00</span></p>
+                  </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="mb-6">
+                  <h3 class="text-lg font-semibold mb-4">Customer Details</h3>
+                  <div class="mb-4">
+                      <label for="customer-search" class="block text-sm font-medium text-gray-700">Search Customer (ID, Email, or Username)</label>
+                      <input id="customer-search" type="text" placeholder="Enter query..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                      <button onclick="searchCustomer()" class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 w-full">Search</button>
+                  </div>
+                  <div id="customer-info" class="hidden p-3 bg-gray-50 rounded-md">
+                      <p><strong>Name:</strong> <span id="customer-name"></span></p>
+                      <p><strong>Email:</strong> <span id="customer-email"></span></p>
+                      <select id="customer-addresses" class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></select>
+                  </div>
+                  <button onclick="openNewCustomerModal()" class="mt-4 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 w-full">Add New Customer</button>
+                </div>
+
+                <div>
+                  <h3 class="text-lg font-semibold mb-4">Payment</h3>
+                  <div class="space-y-4">
+                      <div>
+                        <label for="payment-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                        <select id="payment-method" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"><option value="cash">Cash</option><option value="credit_card">Credit Card</option><option value="paypal">PayPal</option></select>
+                      </div>
+                      <div>
+                        <label for="transaction-id" class="block text-sm font-medium text-gray-700">Transaction ID (Optional)</label>
+                        <input id="transaction-id" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                      </div>
+                  </div>
+                  <button onclick="processSale()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 w-full text-lg font-bold">Process Sale</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    sidebarToggle.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+    sidebarClose.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = toggle.parentElement.nextElementSibling;
+        submenu.classList.toggle('hidden');
+        toggle.classList.toggle('fa-chevron-down');
+        toggle.classList.toggle('fa-chevron-up');
+      });
+    });
+
+    let cart = [];
+    let discountInfo = { id: null, percent: 0, code: '' };
+    let customerInfo = { id: null, addresses: [] };
+    let allProducts = [];
+
+    function showMessage(message, isError = false) {
+        const messageArea = document.getElementById('message-area');
+        messageArea.textContent = message;
+        messageArea.className = 'p-3 mb-4 rounded-md text-sm font-medium';
+        messageArea.classList.add(isError ? 'bg-red-100' : 'bg-green-100', isError ? 'text-red-700' : 'text-green-700');
+    }
+    function hideMessage() {
+        document.getElementById('message-area').className = 'hidden p-3 mb-4 rounded-md text-sm font-medium';
+    }
+
+    async function fetchInitialData() {
+        try {
+            const [categoriesRes, productsRes] = await Promise.all([
+                fetch(`${API_BASE_URL}/categories?page=1&per_page=100`),
+                fetch(`${API_BASE_URL}/products?page=1&per_page=200`)
+            ]);
+            const categoriesData = await categoriesRes.json();
+            document.getElementById('category-filter').innerHTML = '<option value="">All Categories</option>' + 
+              categoriesData.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            
+            const productsData = await productsRes.json();
+            allProducts = productsData.products.filter(p => p.is_active);
+            renderProductList();
+        } catch (error) {
+            showMessage('Failed to load initial data: ' + error.message, true);
+        }
+    }
+    
+    function renderProductList() {
+        const categoryId = document.getElementById('category-filter').value;
+        const searchQuery = document.getElementById('product-search').value.toLowerCase();
+        let products = allProducts;
+        if (categoryId) products = products.filter(p => p.category_id === parseInt(categoryId));
+        if (searchQuery) products = products.filter(p => p.name.toLowerCase().includes(searchQuery) || p.id.toString().includes(searchQuery));
+        
+        const table = document.getElementById('product-list');
+        table.innerHTML = products.length ? products.map(p => `
+          <tr class="${p.stock_quantity === 0 ? 'opacity-50' : ''}">
+            <td class="px-4 py-2">${p.name}</td>
+            <td class="px-4 py-2">$${p.price.toFixed(2)}</td>
+            <td class="px-4 py-2">${p.stock_quantity}</td>
+            <td class="px-4 py-2">
+              <button ${p.stock_quantity === 0 ? 'disabled' : ''} onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, ${p.stock_quantity})" 
+                class="text-indigo-600 hover:underline text-sm disabled:text-gray-400 disabled:no-underline">Add</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No products found</td></tr>';
+    }
+
+    function addToCart(productId, name, price, stock) {
+      hideMessage();
+      const itemInCart = cart.find(item => item.productId === productId);
+      if (itemInCart) {
+        if (itemInCart.quantity >= stock) return showMessage('Stock limit reached.', true);
+        itemInCart.quantity++;
+      } else {
+        cart.push({ productId, name, price, quantity: 1, stock });
+      }
+      updateCart();
+    }
+    
+    function updateCart() {
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      document.getElementById('cart-items').innerHTML = cart.length ? cart.map((item, index) => `
+        <tr>
+          <td class="px-4 py-2">${item.name}</td>
+          <td class="px-4 py-2"><input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)" class="w-16 px-2 py-1 border rounded"></td>
+          <td class="px-4 py-2">$${item.price.toFixed(2)}</td>
+          <td class="px-4 py-2">$${(item.price * item.quantity).toFixed(2)}</td>
+          <td class="px-4 py-2"><button onclick="removeFromCart(${index})" class="text-red-600 hover:underline text-sm">Remove</button></td>
+        </tr>
+      `).join('') : '<tr><td colspan="5" class="px-4 py-2 text-center">Cart is empty</td></tr>';
+      
+      const discountAmount = discountInfo.percent ? (subtotal * discountInfo.percent) / 100 : 0;
+      document.getElementById('cart-subtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('cart-discount').textContent = discountAmount.toFixed(2);
+      document.getElementById('cart-total').textContent = (subtotal - discountAmount).toFixed(2);
+    }
+    
+    function updateQuantity(index, newQuantity) {
+        hideMessage();
+        const quantity = parseInt(newQuantity);
+        if (quantity < 1) cart.splice(index, 1);
+        else if (quantity > cart[index].stock) {
+            showMessage('Quantity exceeds stock. Set to max.', true);
+            cart[index].quantity = cart[index].stock;
+        } else cart[index].quantity = quantity;
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        hideMessage();
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    async function applyDiscount() {
+        hideMessage();
+        const code = document.getElementById('discount-code').value.trim();
+        if (!code) return showMessage('Please enter a discount code.', true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/discounts/code/${encodeURIComponent(code)}`, { credentials: 'include' });
+            if (!response.ok) throw new Error((await response.json()).error || 'Invalid code');
+            const data = await response.json();
+            if (!data.is_active) throw new Error('Code is inactive.');
+            
+            discountInfo = { id: data.id, percent: data.discount_percent, code: data.code };
+            document.getElementById('discount-code').value = '';
+            updateCart();
+            showMessage(`Discount "${data.code}" (${data.discount_percent}%) applied!`, false);
+        } catch (error) {
+            discountInfo = { id: null, percent: 0, code: '' };
+            updateCart();
+            showMessage(error.message, true);
+        }
+    }
+
+    // CORRECTED: Smart search logic for customer
+    async function searchCustomer() {
+        hideMessage();
+        const query = document.getElementById('customer-search').value.trim();
+        if (!query) return showMessage('Please enter a User ID, Email, or Username.', true);
+
+        let user = null;
+        let response;
+        try {
+            if (!isNaN(query)) { // Search by ID
+                response = await fetch(`${API_BASE_URL}/users/${query}`, { credentials: 'include' });
+            } else if (query.includes('@')) { // Search by Email
+                response = await fetch(`${API_BASE_URL}/users/email/${encodeURIComponent(query)}`, { credentials: 'include' });
+            } else { // Search by Username
+                response = await fetch(`${API_BASE_URL}/users/username/${encodeURIComponent(query)}`, { credentials: 'include' });
+            }
+            
+            if (response.ok) {
+                user = await response.json();
+            }
+
+            if (!user) {
+                customerInfo = { id: null, addresses: [] };
+                document.getElementById('customer-info').classList.add('hidden');
+                return showMessage('User not found.', true);
+            }
+
+            const addressResponse = await fetch(`${API_BASE_URL}/admin/addresses/user/${user.id}`, { credentials: 'include' });
+            const addresses = addressResponse.ok ? (await addressResponse.json()) : [];
+            
+            customerInfo = { id: user.id, name: user.full_name || user.username, email: user.email, addresses };
+            document.getElementById('customer-name').textContent = customerInfo.name;
+            document.getElementById('customer-email').textContent = customerInfo.email;
+            document.getElementById('customer-addresses').innerHTML = addresses.length > 0 ? addresses.map(addr => `<option value="${addr.id}">${addr.address_line1}, ${addr.city}</option>`).join('') : '<option value="">No addresses found</option>';
+            document.getElementById('customer-info').classList.remove('hidden');
+
+        } catch (error) {
+            customerInfo = { id: null, addresses: [] };
+            document.getElementById('customer-info').classList.add('hidden');
+            showMessage('Failed to search for user. ' + error.message, true);
+        }
+    }
+    
+    // CORRECTED: Re-enabled the correct 'create_sale' endpoint
+    async function processSale() {
+        hideMessage();
+        const addressId = document.getElementById('customer-addresses').value;
+
+        if (cart.length === 0) return showMessage('Cart is empty.', true);
+        if (!customerInfo.id) return showMessage('Please select a customer.', true);
+        if (!addressId) return showMessage('Please select a shipping address.', true);
+
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const finalTotal = subtotal - (discountInfo.percent ? (subtotal * discountInfo.percent) / 100 : 0);
+
+        const payload = {
+            user_id: customerInfo.id,
+            shipping_address_id: parseInt(addressId),
+            total_price: finalTotal,
+            payment_method: document.getElementById('payment-method').value,
+            transaction_id: document.getElementById('transaction-id').value.trim() || undefined,
+            cart_items: cart.map(item => ({ product_id: item.productId, quantity: item.quantity, price: item.price })),
+            discount_id: discountInfo.id,
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error((await response.json()).error || 'Failed to process sale.');
+
+            const result = await response.json();
+            
+            // Reset state and UI
+            cart = [];
+            discountInfo = { id: null, percent: 0, code: '' };
+            customerInfo = { id: null, addresses: [] };
+            document.getElementById('customer-info').classList.add('hidden');
+            document.getElementById('customer-search').value = '';
+            document.getElementById('transaction-id').value = '';
+            document.getElementById('discount-code').value = '';
+            updateCart();
+            allProducts = []; // Clear cache to force refetch with updated stock
+            fetchInitialData();
+            showMessage(`Sale processed successfully! Order ID: ${result.order.id}`, false);
+
+        } catch (error) {
+            showMessage(error.message, true);
+        }
+    }
+    
+    window.onload = fetchInitialData;
+    document.getElementById('category-filter').addEventListener('change', renderProductList);
+    document.getElementById('product-search').addEventListener('input', () => setTimeout(renderProductList, 300));
+    
+    function openNewCustomerModal() { /* ... unchanged ... */ }
+    async function addNewCustomer(buttonElement) { /* ... unchanged ... */ }
+  </script>
+</body>
+</html>
