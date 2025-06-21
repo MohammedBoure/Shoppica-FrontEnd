@@ -1,0 +1,205 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-indigo-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+      <div class="space-x-4">
+        <a href="./users.html" class="hover:underline">User Management</a>
+        <a href="./products.html" class="hover:underline">Product Management</a>
+        <a href="./orders.html" class="hover:underline">Order Management</a>
+        <a href="./reviews.html" class="hover:underline">Review Management</a>
+        <a href="./pos.html" class="hover:underline">Point of Sale</a>
+        <a href="./logout.html" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">Platform Overview</h2>
+    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold">Total Sales</h3>
+        <p id="total-sales" class="text-2xl font-bold text-indigo-600">--</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold">Total Users</h3>
+        <p id="total-users" class="text-2xl font-bold text-indigo-600">--</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold">New Orders</h3>
+        <p id="new-orders" class="text-2xl font-bold text-indigo-600">--</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold">Top Products</h3>
+        <p id="top-products" class="text-2xl font-bold text-indigo-600">--</p>
+      </div>
+    </div>
+
+    <!-- Top Products Table -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-lg font-semibold mb-4">Top-Selling Products</h3>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Product Name</th>
+            <th class="px-4 py-2 text-left">Price</th>
+            <th class="px-4 py-2 text-left">Stock</th>
+            <th class="px-4 py-2 text-left">Created At</th>
+          </tr>
+        </thead>
+        <tbody id="products-table" class="divide-y divide-gray-200">
+          <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recent Reviews -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Recent Reviews</h3>
+      <div id="reviews-list" class="space-y-4">
+        <p class="text-center">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    async function fetchData() {
+      const errorElement = document.getElementById('error-message');
+
+      try {
+        // Check if user is admin
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+
+        // Fetch Orders
+        const ordersResponse = await fetch(`${API_BASE_URL}/orders?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!ordersResponse.ok) {
+          const errorData = await ordersResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch orders');
+        }
+        const ordersData = await ordersResponse.json();
+        document.getElementById('total-sales').textContent = `$${ordersData.orders.reduce((sum, order) => sum + order.total_price, 0).toFixed(2)}`;
+        document.getElementById('new-orders').textContent = ordersData.total;
+
+        // Fetch Users
+        const usersResponse = await fetch(`${API_BASE_URL}/users?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!usersResponse.ok) {
+          const errorData = await usersResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch users');
+        }
+        const usersData = await usersResponse.json();
+        document.getElementById('total-users').textContent = usersData.total;
+
+        // Fetch Products
+        const productsResponse = await fetch(`${API_BASE_URL}/products?page=1&per_page=5`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!productsResponse.ok) {
+          const errorData = await productsResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch products');
+        }
+        const productsData = await productsResponse.json();
+        document.getElementById('top-products').textContent = productsData.total;
+        const productsTable = document.getElementById('products-table');
+        productsTable.innerHTML = productsData.products.map(product => `
+          <tr>
+            <td class="px-4 py-2">${product.name}</td>
+            <td class="px-4 py-2">$${product.price.toFixed(2)}</td>
+            <td class="px-4 py-2">${product.stock_quantity}</td>
+            <td class="px-4 py-2">${new Date(product.created_at).toLocaleDateString()}</td>
+          </tr>
+        `).join('');
+
+        // Fetch Reviews
+        const reviewsResponse = await fetch(`${API_BASE_URL}/reviews?page=1&per_page=5`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!reviewsResponse.ok) {
+          const errorData = await reviewsResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch reviews');
+        }
+        const reviewsData = await reviewsResponse.json();
+        const reviewsList = document.getElementById('reviews-list');
+        reviewsList.innerHTML = reviewsData.reviews.map(review => `
+          <div class="border-l-4 border-indigo-600 pl-4">
+            <p class="font-semibold">Rating: ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</p>
+            <p>${review.comment}</p>
+            <p class="text-sm text-gray-500">Product ID: ${review.product_id} | ${new Date(review.created_at).toLocaleDateString()}</p>
+          </div>
+        `).join('');
+      } catch (error) {
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load data on page load
+    window.onload = fetchData;
+  </script>
+</body>
+</html>

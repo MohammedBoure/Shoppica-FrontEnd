@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-indigo-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+      <div class="space-x-4">
+        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="./users.html" class="hover:underline">User Details</a>
+        <a href="./categories.html" class="hover:underline">Category Management</a>
+        <a href="./products.html" class="hover:underline">Product Management</a>
+        <a href="./product-discounts.html" class="hover:underline">Product Discount Management</a>
+        <a href="./reviews.html" class="hover:underline">Review Management</a>
+        <a href="./payments.html" class="hover:underline">Payment Management</a>
+        <a href="./pos.html" class="hover:underline">Point of Sale</a>
+        <a href="/logout.html" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">Order Management</h2>
+    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+    <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading orders...</div>
+
+    <!-- Filter by User -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-lg font-semibold mb-4">Filter Orders by User</h3>
+      <div class="flex space-x-4">
+        <input id="filter-user-id" type="number" min="1" placeholder="Enter User ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        <button onclick="debouncedFilterOrdersByUser()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Filter</button>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">All Orders</h3>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">ID</th>
+            <th class="px-4 py-2 text-left">User ID</th>
+            <th class="px-4 py-2 text-left">Status</th>
+            <th class="px-4 py-2 text-left">Total Price</th>
+            <th class="px-4 py-2 text-left">Shipping Address ID</th>
+            <th class="px-4 py-2 text-left">Created At</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table" class="divide-y divide-gray-200">
+          <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://127.0.0.1:5000/api';
+
+    // Debounce function to prevent rapid API calls
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    async function fetchOrders(userId = '') {
+      const errorElement = document.getElementById('error-message');
+      const loadingElement = document.getElementById('loading-message');
+      const ordersTable = document.getElementById('orders-table');
+
+      loadingElement.classList.remove('hidden');
+      errorElement.classList.add('hidden');
+      ordersTable.innerHTML = ''; // Clear the table
+
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        // Validate userId
+        const parsedUserId = userId && !isNaN(userId) ? parseInt(userId) : null;
+
+        // Build the URL
+        let url = parsedUserId
+          ? `${API_BASE_URL}/orders/user/${parsedUserId}`
+          : `${API_BASE_URL}/orders?page=1&per_page=20`;
+
+        // Check access permissions
+        if (!parsedUserId && !user.is_admin) {
+          throw new Error('Admin privileges required to view all orders');
+        }
+
+        if (parsedUserId && !user.is_admin && parsedUserId !== user.id) {
+          throw new Error('Unauthorized to view orders for another user');
+        }
+
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { error: `Failed to fetch orders (Status: ${response.status})` };
+          }
+          throw new Error(errorData.error);
+        }
+
+        const data = await response.json();
+        const orders = data.orders || [];
+
+        if (orders.length) {
+          ordersTable.innerHTML = orders.map(order => `
+            <tr>
+              <td class="px-4 py-2">${order.id}</td>
+              <td class="px-4 py-2">${order.user_id}</td>
+              <td class="px-4 py-2">${order.status}</td>
+              <td class="px-4 py-2">$${order.total_price.toFixed(2)}</td>
+              <td class="px-4 py-2">${order.shipping_address_id || '-'}</td>
+              <td class="px-4 py-2">${new Date(order.created_at).toLocaleString()}</td>
+              <td class="px-4 py-2 space-x-2">
+                <button onclick="openOrderDetailsModal(${order.id})" class="text-indigo-600 hover:underline">Details</button>
+                <button onclick="openEditOrderModal(${order.id})" class="text-indigo-600 hover:underline">Edit</button>
+                <button onclick="deleteOrder(${order.id})" class="text-red-600 hover:underline">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          ordersTable.innerHTML = '<tr><td colspan="7" class="px-4 py-2 text-center">No orders found</td></tr>';
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        errorElement.textContent = error.message || 'An error occurred while fetching orders.';
+        errorElement.classList.remove('hidden');
+      } finally {
+        loadingElement.classList.add('hidden');
+      }
+    }
+
+    async function filterOrdersByUser() {
+      const userIdInput = document.getElementById('filter-user-id').value;
+      console.log('User ID input:', userIdInput); // For debugging
+      const userId = userIdInput && !isNaN(userIdInput) && userIdInput.trim() !== '' ? parseInt(userIdInput) : '';
+      fetchOrders(userId);
+    }
+
+    // Debounced version of filterOrdersByUser
+    const debouncedFilterOrdersByUser = debounce(filterOrdersByUser, 300);
+
+    async function deleteOrder(orderId) {
+      if (!confirm('Are you sure you want to delete this order?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete order (Status: ${response.status})`);
+        }
+        fetchOrders();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openOrderDetailsModal(orderId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      try {
+        const orderResponse = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!orderResponse.ok) {
+          const errorData = await orderResponse.json();
+          throw new Error(errorData.error || `Failed to fetch order (Status: ${orderResponse.status})`);
+        }
+        const order = await orderResponse.json();
+
+        if (!user.is_admin && order.user_id !== user.id) {
+          errorElement.textContent = 'Unauthorized access to this order';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+
+        const itemsResponse = await fetch(`${API_BASE_URL}/order_items/order/${orderId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!itemsResponse.ok) {
+          const errorData = await itemsResponse.json();
+          throw new Error(errorData.error || `Failed to fetch order items (Status: ${itemsResponse.status})`);
+        }
+        const itemsData = await itemsResponse.json();
+        const orderItems = itemsData.order_items || [];
+
+        const paymentsResponse = await fetch(`${API_BASE_URL}/payments/order/${orderId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!paymentsResponse.ok) {
+          const errorData = await paymentsResponse.json();
+          throw new Error(errorData.error || `Failed to fetch payments (Status: ${paymentsResponse.status})`);
+        }
+        const paymentsData = await paymentsResponse.json();
+        const payments = paymentsData.payments || [];
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold mb-4">Order Details (ID: ${orderId})</h3>
+            <div class="space-y-6">
+              <div>
+                <h4 class="text-sm font-medium text-gray-700">Order Information</h4>
+                <p><strong>User ID:</strong> ${order.user_id}</p>
+                <p><strong>Status:</strong> ${order.status}</p>
+                <p><strong>Total Price:</strong> $${order.total_price.toFixed(2)}</p>
+                <p><strong>Shipping Address ID:</strong> ${order.shipping_address_id || '-'}</p>
+                <p><strong>Created At:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-700">Order Items</h4>
+                <table class="w-full table-auto mt-2">
+                  <thead>
+                    <tr class="bg-gray-100">
+                      <th class="px-4 py-2 text-left">ID</th>
+                      <th class="px-4 py-2 text-left">Product</th>
+                      <th class="px-4 py-2 text-left">Quantity</th>
+                      <th class="px-4 py-2 text-left">Price</th>
+                      <th class="px-4 py-2 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    ${orderItems.length ? orderItems.map(item => `
+                      <tr>
+                        <td class="px-4 py-2">${item.id}</td>
+                        <td class="px-4 py-2">${item.product_name} (ID: ${item.product_id})</td>
+                        <td class="px-4 py-2">${item.quantity}</td>
+                        <td class="px-4 py-2">$${item.price.toFixed(2)}</td>
+                        <td class="px-4 py-2 space-x-2">
+                          <button onclick="openEditOrderItemModal(${item.id}, ${orderId})" class="text-indigo-600 hover:underline">Edit</button>
+                          <button onclick="deleteOrderItem(${item.id}, ${orderId})" class="text-red-600 hover:underline">Delete</button>
+                        </td>
+                      </tr>
+                    `).join('') : '<tr><td colspan="5" class="px-4 py-2 text-center">No order items found</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-700">Payments</h4>
+                <table class="w-full table-auto mt-2">
+                  <thead>
+                    <tr class="bg-gray-100">
+                      <th class="px-4 py-2 text-left">ID</th>
+                      <th class="px-4 py-2 text-left">Method</th>
+                      <th class="px-4 py-2 text-left">Status</th>
+                      <th class="px-4 py-2 text-left">Transaction ID</th>
+                      <th class="px-4 py-2 text-left">Paid At</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    ${payments.length ? payments.map(payment => `
+                      <tr>
+                        <td class="px-4 py-2">${payment.id}</td>
+                        <td class="px-4 py-2">${payment.payment_method}</td>
+                        <td class="px-4 py-2">${payment.payment_status}</td>
+                        <td class="px-4 py-2">${payment.transaction_id || '-'}</td>
+                        <td class="px-4 py-2">${payment.paid_at ? new Date(payment.paid_at).toLocaleString() : '-'}</td>
+                      </tr>
+                    `).join('') : '<tr><td colspan="5" class="px-4 py-2 text-center">No payments found</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Close</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening order details modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openEditOrderModal(orderId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch order (Status: ${response.status})`);
+        }
+        const order = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Order (ID: ${orderId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select id="edit-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                  <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                  <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                </select>
+              </div>
+              <div>
+                <label for="edit-total-price" class="block text-sm font-medium text-gray-700">Total Price</label>
+                <input id="edit-total-price" type="number" step="0.01" min="0" value="${order.total_price}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-shipping-address-id" class="block text-sm font-medium text-gray-700">Shipping Address ID</label>
+                <input id="edit-shipping-address-id" type="number" value="${order.shipping_address_id || ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <button onclick="updateOrder(${orderId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit order modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function updateOrder(orderId) {
+      const status = document.getElementById('edit-status').value;
+      const total_price = parseFloat(document.getElementById('edit-total-price').value);
+      const shipping_address_id = document.getElementById('edit-shipping-address-id').value || null;
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(total_price) || total_price < 0) {
+        errorElement.textContent = 'Total price must be a valid non-negative number';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      const payload = { status };
+      if (!isNaN(total_price)) payload.total_price = total_price;
+      if (shipping_address_id) payload.shipping_address_id = parseInt(shipping_address_id);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update order (Status: ${response.status})`);
+        }
+        document.querySelector('div.fixed').remove();
+        fetchOrders();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating order:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openEditOrderItemModal(orderItemId, orderId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/order_items/${orderItemId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch order item (Status: ${response.status})`);
+        }
+        const orderItem = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Order Item (ID: ${orderItemId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                <input id="edit-quantity" type="number" min="1" value="${orderItem.quantity}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="edit-price" class="block text-sm font-medium text-gray-700">Price</label>
+                <input id="edit-price" type="number" step="0.01" min="0" value="${orderItem.price}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <button onclick="updateOrderItem(${orderItemId}, ${orderId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit order item modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function updateOrderItem(orderItemId, orderId) {
+      const quantity = parseInt(document.getElementById('edit-quantity').value);
+      const price = parseFloat(document.getElementById('edit-price').value);
+      const errorElement = document.getElementById('error-message');
+
+      if (isNaN(quantity) || quantity < 1) {
+        errorElement.textContent = 'Quantity must be a valid positive integer';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+      if (isNaN(price) || price < 0) {
+        errorElement.textContent = 'Price must be a valid non-negative number';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/order_items/${orderItemId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quantity, price }),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update order item (Status: ${response.status})`);
+        }
+        document.querySelector('div.fixed').remove();
+        openOrderDetailsModal(orderId);
+        fetchOrders();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating order item:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function deleteOrderItem(orderItemId, orderId) {
+      if (!confirm('Are you sure you want to delete this order item?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/order_items/${orderItemId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete order item (Status: ${response.status})`);
+        }
+        openOrderDetailsModal(orderId);
+        fetchOrders();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting order item:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load orders on page load
+    window.onload = fetchOrders;
+  </script>
+</body>
+</html>

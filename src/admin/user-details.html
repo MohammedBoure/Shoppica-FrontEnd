@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-indigo-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+      <div class="space-x-4">
+        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="./users.html" class="hover:underline">User Management</a>
+        <a href="./products.html" class="hover:underline">Product Management</a>
+        <a href="./orders.html" class="hover:underline">Order Management</a>
+        <a href="./reviews.html" class="hover:underline">Review Management</a>
+        <a href="./pos.html" class="hover:underline">Point of Sale</a>
+        <a href="/logout.html" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">User Details</h2>
+    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+    <div id="loading-message" class="text-gray-700 text-sm mb-4">Loading user details...</div>
+
+    <!-- User Information -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="user-info-section">
+      <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+      <div id="user-info" class="space-y-2">
+        <p><strong>ID:</strong> <span id="user-id">--</span></p>
+        <p><strong>Username:</strong> <span id="user-username">--</span></p>
+        <p><strong>Email:</strong> <span id="user-email">--</span></p>
+        <p><strong>Full Name:</strong> <span id="user-full-name">--</span></p>
+        <p><strong>Phone Number:</strong> <span id="user-phone">--</span></p>
+        <p><strong>Admin:</strong> <span id="user-is-admin">--</span></p>
+        <p><strong>Created At:</strong> <span id="user-created-at">--</span></p>
+      </div>
+    </div>
+
+    <!-- Addresses -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="addresses-section">
+      <h3 class="text-lg font-semibold mb-4">Addresses</h3>
+      <div class="flex justify-between items-center mb-4">
+        <span></span>
+        <a href="./addresses.html" class="text-indigo-600 hover:underline">Manage Addresses</a>
+      </div>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Address Line 1</th>
+            <th class="px-4 py-2 text-left">City</th>
+            <th class="px-4 py-2 text-left">State</th>
+            <th class="px-4 py-2 text-left">Postal Code</th>
+            <th class="px-4 py-2 text-left">Country</th>
+            <th class="px-4 py-2 text-left">Default</th>
+          </tr>
+        </thead>
+        <tbody id="addresses-table" class="divide-y divide-gray-200">
+          <tr><td colspan="6" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Orders -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="orders-section">
+      <h3 class="text-lg font-semibold mb-4">Orders</h3>
+      <div class="flex justify-between items-center mb-4">
+        <span></span>
+        <a href="./orders.html" class="text-indigo-600 hover:underline">Manage Orders</a>
+      </div>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Order ID</th>
+            <th class="px-4 py-2 text-left">Status</th>
+            <th class="px-4 py-2 text-left">Total Price</th>
+            <th class="px-4 py-2 text-left">Created At</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table" class="divide-y divide-gray-200">
+          <tr><td colspan="4" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden" id="cart-items-section">
+      <h3 class="text-lg font-semibold mb-4">Cart Items</h3>
+      <div class="flex justify-between items-center mb-4">
+        <span></span>
+        <a href="./cart.html" class="text-indigo-600 hover:underline">Manage Cart</a>
+      </div>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Cart Item ID</th>
+            <th class="px-4 py-2 text-left">Product ID</th>
+            <th class="px-4 py-2 text-left">Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="cart-items-table" class="divide-y divide-gray-200">
+          <tr><td colspan="3" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Discount Usages -->
+    <div class="bg-white p-6 rounded-lg shadow-lg hidden" id="discount-usages-section">
+      <h3 class="text-lg font-semibold mb-4">Discount Usages</h3>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Discount ID</th>
+            <th class="px-4 py-2 text-left">Used At</th>
+          </tr>
+        </thead>
+        <tbody id="discount-usages-table" class="divide-y divide-gray-200">
+          <tr><td colspan="2" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api'; // Update to match your backend URL
+
+    async function fetchUserDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('id');
+      const errorElement = document.getElementById('error-message');
+      const loadingElement = document.getElementById('loading-message');
+
+      if (!userId) {
+        errorElement.textContent = 'User ID is required';
+        errorElement.classList.remove('hidden');
+        loadingElement.classList.add('hidden');
+        return;
+      }
+
+      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!currentUser.id) {
+        errorElement.textContent = 'Please log in to view this page';
+        errorElement.classList.remove('hidden');
+        loadingElement.classList.add('hidden');
+        window.location.href = './index.html';
+        return;
+      }
+
+      try {
+        // Check permissions
+        if (!currentUser.is_admin && currentUser.id != userId) {
+          errorElement.textContent = 'Unauthorized access';
+          errorElement.classList.remove('hidden');
+          loadingElement.classList.add('hidden');
+          return;
+        }
+
+        // Fetch User Info
+        console.log(`Fetching user info for ID: ${userId}`);
+        const userResponse = await fetch(`${API_BASE_URL}/users/${userId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!userResponse.ok) {
+          const errorData = await userResponse.json();
+          throw new Error(errorData.error || `Failed to fetch user (Status: ${userResponse.status})`);
+        }
+        const user = await userResponse.json();
+        document.getElementById('user-id').textContent = user.id;
+        document.getElementById('user-username').textContent = user.username;
+        document.getElementById('user-email').textContent = user.email;
+        document.getElementById('user-full-name').textContent = user.full_name || '-';
+        document.getElementById('user-phone').textContent = user.phone_number || '-';
+        document.getElementById('user-is-admin').textContent = user.is_admin ? 'Yes' : 'No';
+        document.getElementById('user-created-at').textContent = new Date(user.created_at).toLocaleDateString();
+        document.getElementById('user-info-section').classList.remove('hidden');
+
+        // Fetch Addresses (Admin Only)
+        if (currentUser.is_admin) {
+          console.log(`Fetching addresses for user ID: ${userId}`);
+          const addressesResponse = await fetch(`${API_BASE_URL}/admin/addresses/user/${userId}`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (!addressesResponse.ok) {
+            const errorData = await addressesResponse.json();
+            throw new Error(errorData.error || `Failed to fetch addresses (Status: ${addressesResponse.status})`);
+          }
+          const addresses = await addressesResponse.json();
+          const addressesTable = document.getElementById('addresses-table');
+          addressesTable.innerHTML = addresses.length ? addresses.map(address => `
+            <tr>
+              <td class="px-4 py-2">${address.address_line1}${address.address_line2 ? ', ' + address.address_line2 : ''}</td>
+              <td class="px-4 py-2">${address.city}</td>
+              <td class="px-4 py-2">${address.state}</td>
+              <td class="px-4 py-2">${address.postal_code}</td>
+              <td class="px-4 py-2">${address.country}</td>
+              <td class="px-4 py-2">${address.is_default ? 'Yes' : 'No'}</td>
+            </tr>
+          `).join('') : '<tr><td colspan="6" class="px-4 py-2 text-center">No addresses found</td></tr>';
+          document.getElementById('addresses-section').classList.remove('hidden');
+        } else {
+          document.getElementById('addresses-table').innerHTML = '<tr><td colspan="6" class="px-4 py-2 text-center">Admin access required</td></tr>';
+          document.getElementById('addresses-section').classList.remove('hidden');
+        }
+
+        // Fetch Orders
+        console.log(`Fetching orders for user ID: ${userId}`);
+        const ordersResponse = await fetch(`${API_BASE_URL}/orders/user/${userId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!ordersResponse.ok) {
+          const errorData = await ordersResponse.json();
+          throw new Error(errorData.error || `Failed to fetch orders (Status: ${ordersResponse.status})`);
+        }
+        const ordersData = await ordersResponse.json();
+        const ordersTable = document.getElementById('orders-table');
+        ordersTable.innerHTML = ordersData.orders.length ? ordersData.orders.map(order => `
+          <tr>
+            <td class="px-4 py-2">${order.id}</td>
+            <td class="px-4 py-2">${order.status}</td>
+            <td class="px-4 py-2">$${order.total_price.toFixed(2)}</td>
+            <td class="px-4 py-2">${new Date(order.created_at).toLocaleDateString()}</td>
+          </tr>
+        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No orders found</td></tr>';
+        document.getElementById('orders-section').classList.remove('hidden');
+
+        // Fetch Cart Items (Admin Only)
+        if (currentUser.is_admin) {
+          console.log(`Fetching cart items for user ID: ${userId}`);
+          const cartItemsResponse = await fetch(`${API_BASE_URL}/admin/cart_items/user/${userId}`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (!cartItemsResponse.ok) {
+            const errorData = await cartItemsResponse.json();
+            throw new Error(errorData.error || `Failed to fetch cart items (Status: ${cartItemsResponse.status})`);
+          }
+          const cartItems = await cartItemsResponse.json();
+          const cartItemsTable = document.getElementById('cart-items-table');
+          cartItemsTable.innerHTML = cartItems.length ? cartItems.map(item => `
+            <tr>
+              <td class="px-4 py-2">${item.id}</td>
+              <td class="px-4 py-2">${item.product_id}</td>
+              <td class="px-4 py-2">${item.quantity}</td>
+            </tr>
+          `).join('') : '<tr><td colspan="3" class="px-4 py-2 text-center">No cart items found</td></tr>';
+          document.getElementById('cart-items-section').classList.remove('hidden');
+        } else {
+          document.getElementById('cart-items-table').innerHTML = '<tr><td colspan="3" class="px-4 py-2 text-center">Admin access required</td></tr>';
+          document.getElementById('cart-items-section').classList.remove('hidden');
+        }
+
+        // Fetch Discount Usages
+        console.log(`Fetching discount usages for user ID: ${userId}`);
+        const discountUsagesResponse = await fetch(`${API_BASE_URL}/discount_usages/user/${userId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!discountUsagesResponse.ok) {
+          const errorData = await discountUsagesResponse.json();
+          throw new Error(errorData.error || `Failed to fetch discount usages (Status: ${discountUsagesResponse.status})`);
+        }
+        const discountUsages = await discountUsagesResponse.json();
+        const discountUsagesTable = document.getElementById('discount-usages-table');
+        discountUsagesTable.innerHTML = discountUsages.discount_usages.length ? discountUsages.discount_usages.map(usage => `
+          <tr>
+            <td class="px-4 py-2">${usage.discount_id}</td>
+            <td class="px-4 py-2">${new Date(usage.used_at).toLocaleDateString()}</td>
+          </tr>
+        `).join('') : '<tr><td colspan="2" class="px-4 py-2 text-center">No discount usages found</td></tr>';
+        document.getElementById('discount-usages-section').classList.remove('hidden');
+
+        loadingElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+        loadingElement.classList.add('hidden');
+      }
+    }
+
+    // Load user details on page load
+    window.onload = fetchUserDetails;
+  </script>
+</body>
+</html>

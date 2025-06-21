@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center mb-6">Logout</h2>
+    <p class="text-center text-gray-700 mb-6">Are you sure you want to log out?</p>
+    <button onclick="handleLogout()" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Logout</button>
+    <p class="text-center text-sm mt-4">
+      <a href="/home.html" class="text-indigo-600 hover:underline">Back to Homepage</a> |
+      <a href="/profile.html" class="text-indigo-600 hover:underline">User Profile</a> |
+      <a href="/cart.html" class="text-indigo-600 hover:underline">Cart</a>
+    </p>
+    <p id="logout-error" class="text-red-500 text-sm hidden mt-4"></p>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    async function handleLogout() {
+      const errorElement = document.getElementById('logout-error');
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/logout`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          errorElement.textContent = data.error || 'Logout failed';
+          errorElement.classList.remove('hidden');
+          return;
+        }
+
+        localStorage.removeItem('user');
+        window.location.href = '/index.html'; // Redirect to Login/Register
+      } catch (error) {
+        errorElement.textContent = 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -10,3 +10,6 @@ docs: add full documentation for admin and public pages with related APIs
 -----
 
 fix(changelog): corrected formatting and typos
+-----
+
+feat: initial planning for admin dashboard structure

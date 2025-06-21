@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-indigo-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+      <div class="space-x-4">
+        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="./users.html" class="hover:underline">User Details</a>
+        <a href="./categories.html" class="hover:underline">Category Management</a>
+        <a href="./products.html" class="hover:underline">Product Management</a>
+        <a href="./product-discounts.html" class="hover:underline">Product Discount Management</a>
+        <a href="./reviews.html" class="hover:underline">Review Management</a>
+        <a href="./orders.html" class="hover:underline">Order Management</a>
+        <a href="./pos.html" class="hover:underline">Point of Sale</a>
+        <a href="/logout.html" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">Payment Management</h2>
+    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+    <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading payments...</div>
+
+    <!-- Filter by Order -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-lg font-semibold mb-4">Filter Payments by Order</h3>
+      <div class="flex space-x-4">
+        <input id="filter-order-id" type="number" min="1" placeholder="Enter Order ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        <button onclick="debouncedFilterPaymentsByOrder()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Filter</button>
+      </div>
+    </div>
+
+    <!-- Payments Table -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">All Payments</h3>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">ID</th>
+            <th class="px-4 py-2 text-left">Order ID</th>
+            <th class="px-4 py-2 text-left">Payment Method</th>
+            <th class="px-4 py-2 text-left">Payment Status</th>
+            <th class="px-4 py-2 text-left">Transaction ID</th>
+            <th class="px-4 py-2 text-left">Paid At</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="payments-table" class="divide-y divide-gray-200">
+          <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    // Debounce function to prevent rapid API calls
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    async function fetchPayments(orderId = '') {
+      const errorElement = document.getElementById('error-message');
+      const loadingElement = document.getElementById('loading-message');
+      const paymentsTable = document.getElementById('payments-table');
+
+      loadingElement.classList.remove('hidden');
+      errorElement.classList.add('hidden');
+      paymentsTable.innerHTML = ''; // Clear the table
+
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        // Validate orderId
+        const parsedOrderId = orderId && !isNaN(orderId) && orderId.trim() !== '' ? parseInt(orderId) : null;
+
+        // Build the URL
+        let url = parsedOrderId 
+          ? `${API_BASE_URL}/payments/order/${parsedOrderId}` 
+          : `${API_BASE_URL}/payments?page=1&per_page=20`;
+
+        if (!parsedOrderId && !user.is_admin) {
+          throw new Error('Admin privileges required to view all payments');
+        }
+
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { error: `Failed to fetch payments (Status: ${response.status})` };
+          }
+          throw new Error(errorData.error);
+        }
+
+        const data = await response.json();
+        const payments = parsedOrderId ? data.payments || [] : data.payments || [];
+
+        paymentsTable.innerHTML = payments.length ? payments.map(payment => `
+          <tr>
+            <td class="px-4 py-2">${payment.id}</td>
+            <td class="px-4 py-2">${payment.order_id}</td>
+            <td class="px-4 py-2">${payment.payment_method}</td>
+            <td class="px-4 py-2">${payment.payment_status}</td>
+            <td class="px-4 py-2">${payment.transaction_id || '-'}</td>
+            <td class="px-4 py-2">${payment.paid_at ? new Date(payment.paid_at).toLocaleString() : '-'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditModal(${payment.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deletePayment(${payment.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No payments found</td></tr>';
+
+      } catch (error) {
+        console.error('Error fetching payments:', error);
+        errorElement.textContent = error.message || 'An error occurred while fetching payments.';
+        errorElement.classList.remove('hidden');
+      } finally {
+        loadingElement.classList.add('hidden');
+      }
+    }
+
+    async function filterPaymentsByOrder() {
+      const orderIdInput = document.getElementById('filter-order-id').value;
+      console.log('Order ID input:', orderIdInput); // For debugging
+      const orderId = orderIdInput && !isNaN(orderIdInput) && orderIdInput.trim() !== '' ? parseInt(orderIdInput) : '';
+      fetchPayments(orderId);
+    }
+
+    // Debounced version of filterPaymentsByOrder
+    const debouncedFilterPaymentsByOrder = debounce(filterPaymentsByOrder, 300);
+
+    async function deletePayment(paymentId) {
+      if (!confirm('Are you sure you want to delete this payment?')) return;
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete payment (Status: ${response.status})`);
+        }
+        fetchPayments();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting payment:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function openEditModal(paymentId) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const errorElement = document.getElementById('error-message');
+
+      if (!user.is_admin) {
+        errorElement.textContent = 'Admin privileges required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch payment (Status: ${response.status})`);
+        }
+        const payment = await response.json();
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+        modal.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Edit Payment (ID: ${paymentId})</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="edit-payment-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                <select id="edit-payment-method" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="credit_card" ${payment.payment_method === 'credit_card' ? 'selected' : ''}>Credit Card</option>
+                  <option value="paypal" ${payment.payment_method === 'paypal' ? 'selected' : ''}>PayPal</option>
+                  <option value="bank_transfer" ${payment.payment_method === 'bank_transfer' ? 'selected' : ''}>Bank Transfer</option>
+                </select>
+              </div>
+              <div>
+                <label for="edit-payment-status" class="block text-sm font-medium text-gray-700">Payment Status</label>
+                <select id="edit-payment-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="unpaid" ${payment.payment_status === 'unpaid' ? 'selected' : ''}>Unpaid</option>
+                  <option value="paid" ${payment.payment_status === 'paid' ? 'selected' : ''}>Paid</option>
+                  <option value="failed" ${payment.payment_status === 'failed' ? 'selected' : ''}>Failed</option>
+                </select>
+              </div>
+              <div>
+                <label for="edit-transaction-id" class="block text-sm font-medium text-gray-700">Transaction ID</label>
+                <input id="edit-transaction-id" type="text" value="${payment.transaction_id || ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+              <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+              <button onclick="updatePayment(${paymentId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } catch (error) {
+        console.error('Error opening edit modal:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function updatePayment(paymentId) {
+      const payment_method = document.getElementById('edit-payment-method').value;
+      const payment_status = document.getElementById('edit-payment-status').value;
+      const transaction_id = document.getElementById('edit-transaction-id').value || null;
+      const errorElement = document.getElementById('error-message');
+
+      try {
+        const payload = { payment_method, payment_status };
+        if (transaction_id) payload.transaction_id = transaction_id;
+
+        const response = await fetch(`${API_BASE_URL}/payments/${paymentId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update payment (Status: ${response.status})`);
+        }
+        document.querySelector('div.fixed').remove();
+        fetchPayments();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating payment:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load payments on page load
+    window.onload = fetchPayments;
+  </script>
+</body>
+</html>

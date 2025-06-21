@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Address Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-indigo-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Shoppica Dashboard</h1>
+      <div class="space-x-4">
+        <a href="./dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="./users.html" class="hover:underline">User Management</a>
+        <a href="./products.html" class="hover:underline">Product Management</a>
+        <a href="./orders.html" class="hover:underline">Order Management</a>
+        <a href="./reviews.html" class="hover:underline">Review Management</a>
+        <a href="./pos.html" class="hover:underline">Point of Sale</a>
+        <a href="/logout.html" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6">Address Management</h2>
+    <div id="error-message" class="text-red-500 text-sm hidden mb-4"></div>
+    <div id="loading-message" class="text-gray-700 text-sm mb-4 hidden">Loading addresses...</div>
+
+    <!-- Search by User ID -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-lg font-semibold mb-4">Search Addresses by User ID</h3>
+      <div class="flex space-x-4">
+        <input id="search-user-id" type="number" placeholder="Enter User ID" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        <button onclick="searchAddressesByUser()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Search</button>
+      </div>
+      <div id="search-result" class="mt-4 hidden">
+        <h4 class="font-semibold">Search Results:</h4>
+        <table class="w-full table-auto mt-2">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="px-4 py-2 text-left">Address Line 1</th>
+              <th class="px-4 py-2 text-left">City</th>
+              <th class="px-4 py-2 text-left">Country</th>
+              <th class="px-4 py-2 text-left">Default</th>
+            </tr>
+          </thead>
+          <tbody id="search-addresses-table" class="divide-y divide-gray-200"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add Address Form -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-lg font-semibold mb-4">Add New Address</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="add-user-id" class="block text-sm font-medium text-gray-700">User ID</label>
+          <input id="add-user-id" type="number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+        <div>
+          <label for="add-address-line1" class="block text-sm font-medium text-gray-700">Address Line 1</label>
+          <input id="add-address-line1" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+        <div>
+          <label for="add-address-line2" class="block text-sm font-medium text-gray-700">Address Line 2</label>
+          <input id="add-address-line2" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label for="add-city" class="block text-sm font-medium text-gray-700">City</label>
+          <input id="add-city" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+        <div>
+          <label for="add-state" class="block text-sm font-medium text-gray-700">State</label>
+          <input id="add-state" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label for="add-postal-code" class="block text-sm font-medium text-gray-700">Postal Code</label>
+          <input id="add-postal-code" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label for="add-country" class="block text-sm font-medium text-gray-700">Country</label>
+          <input id="add-country" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+        <div>
+          <label for="add-is-default" class="block text-sm font-medium text-gray-700">Default Address</label>
+          <input id="add-is-default" type="checkbox" class="mt-1 h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        </div>
+      </div>
+      <button onclick="addAddress()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Address</button>
+    </div>
+
+    <!-- Addresses Table -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">All Addresses</h3>
+      <table class="w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">ID</th>
+            <th class="px-4 py-2 text-left">User ID</th>
+            <th class="px-4 py-2 text-left">Address Line 1</th>
+            <th class="px-4 py-2 text-left">City</th>
+            <th class="px-4 py-2 text-left">Country</th>
+            <th class="px-4 py-2 text-left">Default</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="addresses-table" class="divide-y divide-gray-200">
+          <tr><td colspan="7" class="px-4 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+
+    async function fetchAddresses() {
+      const errorElement = document.getElementById('error-message');
+      const loadingElement = document.getElementById('loading-message');
+      loadingElement.classList.remove('hidden');
+
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.is_admin) {
+          errorElement.textContent = 'Admin privileges required';
+          errorElement.classList.remove('hidden');
+          loadingElement.classList.add('hidden');
+          return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/admin/addresses?page=1&per_page=20`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch addresses (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        const addressesTable = document.getElementById('addresses-table');
+        addressesTable.innerHTML = data.addresses.length ? data.addresses.map(address => `
+          <tr>
+            <td class="px-4 py-2">${address.id}</td>
+            <td class="px-4 py-2"><a href="./user-details.html?id=${address.user_id}" class="text-indigo-600 hover:underline">${address.user_id}</a></td>
+            <td class="px-4 py-2">${address.address_line1}${address.address_line2 ? ', ' + address.address_line2 : ''}</td>
+            <td class="px-4 py-2">${address.city}</td>
+            <td class="px-4 py-2">${address.country}</td>
+            <td class="px-4 py-2">${address.is_default ? 'Yes' : 'No'}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button onclick="openEditModal(${address.id})" class="text-indigo-600 hover:underline">Edit</button>
+              <button onclick="deleteAddress(${address.id})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        `).join('') : '<tr><td colspan="7" class="px-4 py-2 text-center">No addresses found</td></tr>';
+        errorElement.classList.add('hidden');
+        loadingElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error fetching addresses:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+        loadingElement.classList.add('hidden');
+      }
+    }
+
+    async function searchAddressesByUser() {
+      const userId = document.getElementById('search-user-id').value;
+      const errorElement = document.getElementById('error-message');
+      const resultElement = document.getElementById('search-result');
+      const searchTable = document.getElementById('search-addresses-table');
+
+      if (!userId) {
+        errorElement.textContent = 'User ID is required';
+        errorElement.classList.remove('hidden');
+        resultElement.classList.add('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/admin/addresses/user/${userId}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch addresses for user (Status: ${response.status})`);
+        }
+        const addresses = await response.json();
+        searchTable.innerHTML = addresses.length ? addresses.map(address => `
+          <tr>
+            <td class="px-4 py-2">${address.address_line1}${address.address_line2 ? ', ' + address.address_line2 : ''}</td>
+            <td class="px-4 py-2">${address.city}</td>
+            <td class="px-4 py-2">${address.country}</td>
+            <td class="px-4 py-2">${address.is_default ? 'Yes' : 'No'}</td>
+          </tr>
+        `).join('') : '<tr><td colspan="4" class="px-4 py-2 text-center">No addresses found for this user</td></tr>';
+        resultElement.classList.remove('hidden');
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error searching addresses:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+        resultElement.classList.add('hidden');
+      }
+    }
+
+    async function addAddress() {
+      const user_id = document.getElementById('add-user-id').value;
+      const address_line1 = document.getElementById('add-address-line1').value;
+      const address_line2 = document.getElementById('add-address-line2').value;
+      const city = document.getElementById('add-city').value;
+      const state = document.getElementById('add-state').value;
+      const postal_code = document.getElementById('add-postal-code').value;
+      const country = document.getElementById('add-country').value;
+      const is_default = document.getElementById('add-is-default').checked;
+      const errorElement = document.getElementById('error-message');
+
+      if (!user_id || !address_line1 || !city || !country) {
+        errorElement.textContent = 'User ID, address line 1, city, and country are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/addresses`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id, address_line1, address_line2, city, state, postal_code, country, is_default }),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add address (Status: ${response.status})`);
+        }
+        document.getElementById('add-user-id').value = '';
+        document.getElementById('add-address-line1').value = '';
+        document.getElementById('add-address-line2').value = '';
+        document.getElementById('add-city').value = '';
+        document.getElementById('add-state').value = '';
+        document.getElementById('add-postal-code').value = '';
+        document.getElementById('add-country').value = '';
+        document.getElementById('add-is-default').checked = false;
+        fetchAddresses();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error adding address:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    async function deleteAddress(addressId) {
+      if (!confirm('Are you sure you want to delete this address?')) return;
+      const errorElement = document.getElementById('error-message');
+      try {
+        const response = await fetch(`${API_BASE_URL}/addresses/${addressId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to delete address (Status: ${response.status})`);
+        }
+        fetchAddresses();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error deleting address:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    function openEditModal(addressId) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center';
+      modal.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <h3 class="text-lg font-semibold mb-4">Edit Address</h3>
+          <div class="space-y-4">
+            <div>
+              <label for="edit-address-line1" class="block text-sm font-medium text-gray-700">Address Line 1</label>
+              <input id="edit-address-line1" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label for="edit-address-line2" class="block text-sm font-medium text-gray-700">Address Line 2</label>
+              <input id="edit-address-line2" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label for="edit-city" class="block text-sm font-medium text-gray-700">City</label>
+              <input id="edit-city" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label for="edit-state" class="block text-sm font-medium text-gray-700">State</label>
+              <input id="edit-state" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label for="edit-postal-code" class="block text-sm font-medium text-gray-700">Postal Code</label>
+              <input id="edit-postal-code" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label for="edit-country" class="block text-sm font-medium text-gray-700">Country</label>
+              <input id="edit-country" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label for="edit-is-default" class="block text-sm font-medium text-gray-700">Default Address</label>
+              <input id="edit-is-default" type="checkbox" class="mt-1 h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end space-x-2">
+            <button onclick="this.closest('div.fixed').remove()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+            <button onclick="updateAddress(${addressId})" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      // Fetch address details to populate the modal
+      fetch(`${API_BASE_URL}/addresses/${addressId}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(address => {
+          document.getElementById('edit-address-line1').value = address.address_line1;
+          document.getElementById('edit-address-line2').value = address.address_line2 || '';
+          document.getElementById('edit-city').value = address.city;
+          document.getElementById('edit-state').value = address.state || '';
+          document.getElementById('edit-postal-code').value = address.postal_code || '';
+          document.getElementById('edit-country').value = address.country;
+          document.getElementById('edit-is-default').checked = address.is_default;
+        })
+        .catch(error => {
+          console.error('Error fetching address for edit:', error);
+          alert('Failed to load address details');
+        });
+    }
+
+    async function updateAddress(addressId) {
+      const address_line1 = document.getElementById('edit-address-line1').value;
+      const address_line2 = document.getElementById('edit-address-line2').value;
+      const city = document.getElementById('edit-city').value;
+      const state = document.getElementById('edit-state').value;
+      const postal_code = document.getElementById('edit-postal-code').value;
+      const country = document.getElementById('edit-country').value;
+      const is_default = document.getElementById('edit-is-default').checked;
+      const errorElement = document.getElementById('error-message');
+
+      if (!address_line1 || !city || !country) {
+        errorElement.textContent = 'Address line 1, city, and country are required';
+        errorElement.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/addresses/${addressId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address_line1, address_line2, city, state, postal_code, country, is_default }),
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to update address (Status: ${response.status})`);
+        }
+        document.querySelector('div.fixed').remove();
+        fetchAddresses();
+        errorElement.classList.add('hidden');
+      } catch (error) {
+        console.error('Error updating address:', error);
+        errorElement.textContent = error.message || 'An error occurred';
+        errorElement.classList.remove('hidden');
+      }
+    }
+
+    // Load addresses on page load
+    window.onload = fetchAddresses;
+  </script>
+</body>
+</html>
