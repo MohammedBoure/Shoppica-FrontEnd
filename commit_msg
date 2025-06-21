@@ -1,0 +1,5 @@
+docs: add full documentation for admin and public pages with related APIs
+
+- Added a detailed README file explaining all admin pages, their features, and the APIs each one uses.
+- Documented all public-facing pages with clear descriptions and the APIs used in each.
+- Created APIS.md file with simple and complete documentation of all available API endpoints, including methods, parameters, and responses.
