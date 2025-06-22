@@ -159,8 +159,10 @@
         </div>
 
         <!-- Add Product Form -->
-        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-          <h3 class="text-lg font-semibold mb-4">Add New Product</h3>
+        <!-- Add Product Form -->
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h3 class="text-lg font-semibold mb-4">Add New Product</h3>
+        <form id="add-product-form">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="add-name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -193,8 +195,9 @@
               <input id="add-is-active" type="checkbox" checked class="mt-1 h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
             </div>
           </div>
-          <button onclick="addProduct()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Product</button>
-        </div>
+          <button type="button" onclick="addProduct()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add Product</button>
+        </form>
+      </div>
 
         <!-- Products Table -->
         <div class="bg-white p-6 rounded-lg shadow-lg">

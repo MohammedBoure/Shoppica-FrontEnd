@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Listing - Shoppica</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+    const IMAGE_BASE_URL = 'https://shoppica-backend.onrender.com/static/';
+
+    const ProductListing = () => {
+      const [products, setProducts] = useState([]);
+      const [filteredProducts, setFilteredProducts] = useState([]);
+      const [categories, setCategories] = useState([]);
+      const [selectedCategory, setSelectedCategory] = useState('');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [page, setPage] = useState(1);
+      const [totalPages, setTotalPages] = useState(1);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+      const perPage = 12;
+
+      // Fetch categories for filter dropdown
+      const fetchCategories = async () => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/categories?page=1&per_page=100`);
+          const data = await response.json();
+          if (response.ok) {
+            setCategories(data.categories);
+          } else {
+            setError(data.error || 'Failed to fetch categories');
+          }
+        } catch (err) {
+          setError('Network error');
+        }
+      };
+
+      // Fetch products (all or by category)
+      const fetchProducts = async () => {
+        setLoading(true);
+        try {
+          const url = selectedCategory
+            ? `${API_BASE_URL}/products/category/${selectedCategory}?page=${page}&per_page=${perPage}`
+            : `${API_BASE_URL}/products?page=${page}&per_page=${perPage}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          if (response.ok) {
+            // Fetch discounts for each product
+            const productsWithDiscounts = await Promise.all(
+              data.products.map(async (product) => {
+                // تحويل image_url إلى رابط كامل
+                const imageUrl = product.image_url
+                  ? `${IMAGE_BASE_URL}${product.image_url}`
+                  : 'https://via.placeholder.com/150';
+
+                // جلب خصم المنتج
+                const discountResponse = await fetch(`${API_BASE_URL}/product_discounts/product/${product.id}`);
+                const discountData = await discountResponse.json();
+                let finalDiscount = discountData.product_discounts[0]?.discount_percent || null;
+
+                // جلب خصم الفئة إذا لم يكن هناك خصم على المنتج وكان category_id موجودًا
+                if (!finalDiscount && product.category_id) {
+                  try {
+                    const categoryDiscountResponse = await fetch(`${API_BASE_URL}/category_discounts/valid/${product.category_id}`);
+                    const categoryDiscountData = await categoryDiscountResponse.json();
+                    finalDiscount = categoryDiscountData.category_discounts[0]?.discount_percent || null;
+                  } catch (err) {
+                    console.warn(`Failed to fetch category discount for category ${product.category_id}:`, err);
+                  }
+                }
+
+                return {
+                  ...product,
+                  discount: finalDiscount,
+                  image_url: imageUrl,
+                };
+              })
+            );
+            setProducts(productsWithDiscounts);
+            setFilteredProducts(productsWithDiscounts);
+            setTotalPages(selectedCategory ? Math.ceil(productsWithDiscounts.length / perPage) : Math.ceil(data.total / perPage));
+          } else {
+            setError(data.error || 'Failed to fetch products');
+          }
+        } catch (err) {
+          setError('Network error');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      // Handle search filtering (client-side)
+      useEffect(() => {
+        const filtered = products.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+        setTotalPages(Math.ceil(filtered.length / perPage));
+      }, [searchQuery, products]);
+
+      // Fetch data on mount and when page or category changes
+      useEffect(() => {
+        fetchCategories();
+        fetchProducts();
+      }, [page, selectedCategory]);
+
+      // Handle pagination
+      const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+          setPage(newPage);
+        }
+      };
+
+      // Simulate adding to cart (placeholder)
+      const addToCart = (productId) => {
+        alert(`Product ${productId} added to cart!`); // Placeholder for cart functionality
+      };
+
+      if (loading) return <div className="text-center py-10">Loading...</div>;
+      if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+
+      return (
+        <div className="min-h-screen bg-gray-100">
+          {/* Header */}
+          <header className="bg-blue-600 text-white py-4">
+            <div className="container mx-auto flex justify-between items-center px-4">
+              <h1 className="text-2xl font-bold">Shoppica</h1>
+              <nav className="space-x-4">
+                <a href="/" className="hover:underline">Home</a>
+                <a href="/categories" className="hover:underline">Categories</a>
+                <a href="/cart" className="hover:underline">Cart</a>
+              </nav>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <section className="py-10">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold mb-6">Products</h2>
+
+              {/* Filters and Search */}
+              <div className="flex flex-col sm:flex-row justify-between mb-6 gap-4">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+                <div className="w-full sm:w-48">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                      setPage(1);
+                    }}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Product Grid */}
+              {filteredProducts.length === 0 ? (
+                <p className="text-center text-gray-600">No products found.</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {filteredProducts.slice((page - 1) * perPage, page * perPage).map((product) => (
+                    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-full h-48 object-cover"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150'; }}
+                      />
+                      <div className="p-4">
+                        <h3 className="text-lg font-semibold">{product.name}</h3>
+                        <p className="text-gray-600 truncate">{product.description}</p>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="text-lg font-bold">
+                            ${product.discount
+                              ? (product.price * (1 - product.discount / 100)).toFixed(2)
+                              : product.price.toFixed(2)}
+                            {product.discount && (
+                              <span className="text-sm text-red-500 ml-2">(-{product.discount}%)</span>
+                            )}
+                          </span>
+                        </div>
+                        <div className="flex space-x-2 mt-4">
+                          <a
+                            href={`/product/${product.id}`}
+                            className="flex-1 bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700"
+                          >
+                            View Details
+                          </a>
+                          <button
+                            onClick={() => addToCart(product.id)}
+                            className="flex-1 bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-8 space-x-2">
+                  <button
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1}
+                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  <span className="px-4 py-2">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page === totalPages}
+                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-gray-800 text-white py-6">
+            <div className="container mx-auto text-center">
+              <p>© 2025 Shoppica. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<ProductListing />, document.getElementById('root'));
+  </script>
+</body>
+</html>
