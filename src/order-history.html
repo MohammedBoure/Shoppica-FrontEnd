@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppica - Order History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Order History Section */
+        .order-history-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .order-list {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card {
+            border-bottom: 1px solid #eee;
+            padding: 1.5rem 0;
+        }
+
+        .order-card:last-child {
+            border-bottom: none;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .order-status {
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .status-shipped {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .status-delivered {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .order-details p {
+            margin-bottom: 0.5rem;
+        }
+
+        .order-total {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .order-items {
+            margin-top: 1rem;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+
+        .order-item-info h4 {
+            font-size: 1rem;
+        }
+
+        .payment-status {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e55a5a;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-item img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 0.5rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Shoppica</div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="categories.html">Categories</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="login.html">Login/Register</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="order-history-section">
+        <div class="container">
+            <h2 class="section-title">Order History</h2>
+            <div id="error-message" class="error-message"></div>
+            <div class="order-list" id="order-list"></div>
+            <div>
+                <a href="profile.html" class="btn">Go to Profile</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Shoppica. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+        const IMAGE_BASE_URL = 'https://shoppica-backend.onrender.com';
+
+        // Check authentication status and get user ID
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/me`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    throw new Error('Authentication required');
+                }
+                const user = await response.json();
+                return user.id;
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                alert('Please log in to view your order history.');
+                window.location.href = 'login.html';
+                return null;
+            }
+        }
+
+        // Fetch user's orders
+        async function fetchUserOrders(userId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/orders/user/${userId}`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch orders');
+                }
+                const data = await response.json();
+                return data.orders || [];
+            } catch (error) {
+                console.error('Error fetching user orders:', error);
+                throw error;
+            }
+        }
+
+        // Fetch order items
+        async function fetchOrderItems(orderId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/order_items/order/${orderId}`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch order items');
+                }
+                const data = await response.json();
+                return data.order_items || [];
+            } catch (error) {
+                console.error('Error fetching order items:', error);
+                return [];
+            }
+        }
+
+        // Fetch payment details
+        async function fetchPayments(orderId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/order/${orderId}`, {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch payment details');
+                }
+                const data = await response.json();
+                return data.payments || [];
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+                return [];
+            }
+        }
+
+        // Render order history
+        async function renderOrderHistory() {
+            const userId = await checkAuthStatus();
+            if (!userId) return;
+
+            const errorElement = document.getElementById('error-message');
+            const orderList = document.getElementById('order-list');
+
+            try {
+                const orders = await fetchUserOrders(userId);
+                if (orders.length === 0) {
+                    orderList.innerHTML = '<p class="no-orders">No orders found.</p>';
+                    return;
+                }
+
+                orderList.innerHTML = '';
+                for (const order of orders) {
+                    const orderItems = await fetchOrderItems(order.id);
+                    const payments = await fetchPayments(order.id);
+
+                    const orderCard = document.createElement('div');
+                    orderCard.className = 'order-card';
+
+                    // Determine status class
+                    let statusClass = '';
+                    switch (order.status.toLowerCase()) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            break;
+                        case 'shipped':
+                            statusClass = 'status-shipped';
+                            break;
+                        case 'delivered':
+                            statusClass = 'status-delivered';
+                            break;
+                    }
+
+                    // Build order items HTML
+                    let itemsHtml = '';
+                    for (const item of orderItems) {
+                        const productResponse = await fetch(`${API_BASE_URL}/products/${item.product_id}`);
+                        const product = await productResponse.json();
+                        itemsHtml += `
+                            <div class="order-item">
+                                <img src="${IMAGE_BASE_URL}/${product.image_url}" alt="${item.product_name}">
+                                <div class="order-item-info">
+                                    <h4><a href="product-details.html?id=${item.product_id}">${item.product_name}</a></h4>
+                                    <p>$${item.price.toFixed(2)} x ${item.quantity}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    // Build payment status
+                    const payment = payments.length > 0 ? payments[0] : null;
+                    const paymentStatus = payment ? payment.payment_status.charAt(0).toUpperCase() + payment.payment_status.slice(1) : 'N/A';
+
+                    orderCard.innerHTML = `
+                        <div class="order-header">
+                            <h3>Order #${order.id}</h3>
+                            <span class="order-status ${statusClass}">${order.status}</span>
+                        </div>
+                        <div class="order-details">
+                            <p>Order Date: ${new Date(order.created_at).toLocaleDateString()}</p>
+                            <p class="order-total">Total: $${order.total_price.toFixed(2)}</p>
+                            <p>Payment Status: <span class="payment-status">${paymentStatus}</span></p>
+                            <div class="order-items">${itemsHtml}</div>
+                            <a href="order-confirmation.html?order_id=${order.id}" class="btn">View Details</a>
+                        </div>
+                    `;
+                    orderList.appendChild(orderCard);
+                }
+            } catch (error) {
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrderHistory();
+        });
+    </script>
+</body>
+</html>

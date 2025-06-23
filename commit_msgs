@@ -19,3 +19,10 @@ Enhance admin interface design and finish configuration tasks
 -----
 
 Enhance admin interface design and finish configuration tasks
+-----
+
+feat(ui): finalize initial UI design and fix product image URL handling
+
+- Completed basic UI layout for all views
+- Fixed product image URLs to support backend integration
+- Added fallback handling for missing or invalid images

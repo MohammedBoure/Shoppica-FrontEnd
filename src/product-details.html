@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppica - Product Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .product-details {
+            padding: 3rem 0;
+        }
+
+        .product-content {
+            display: flex;
+            gap: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-images {
+            flex: 1;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border 0.3s;
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #ff6b6b;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .discount {
+            color: #28a745;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stock {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            margin-bottom: 1rem;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quantity input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e55a5a;
+        }
+
+        .reviews {
+            margin-top: 2rem;
+        }
+
+        .reviews h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .review {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .review .rating {
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .review .comment {
+            margin-bottom: 0.5rem;
+        }
+
+        .review .date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-content {
+                flex-direction: column;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Shoppica</div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="categories.html">Categories</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="login.html">Login/Register</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="product-details">
+        <div class="container">
+            <div class="product-content" id="product-content">
+                <div class="product-images">
+                    <img id="main-image" src="" alt="Product Image" class="main-image">
+                    <div class="thumbnail-gallery" id="thumbnail-gallery"></div>
+                </div>
+                <div class="product-info">
+                    <h1 id="product-name"></h1>
+                    <div class="price" id="product-price"></div>
+                    <div class="discount" id="product-discount"></div>
+                    <div class="stock" id="product-stock"></div>
+                    <p class="description" id="product-description"></p>
+                    <div class="quantity">
+                        <label for="quantity-input">Quantity:</label>
+                        <input type="number" id="quantity-input" min="1" value="1">
+                    </div>
+                    <a href="#" class="btn" id="add-to-cart-btn">Add to Cart</a>
+                    <a href="review-submission.html" class="btn" id="submit-review-btn" style="display: none;">Submit Review</a>
+                </div>
+            </div>
+            <div class="reviews">
+                <h2>Customer Reviews</h2>
+                <div id="reviews-list"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Shoppica. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'https://shoppica-backend.onrender.com/api';
+        const IMAGE_BASE_URL = 'https://shoppica-backend.onrender.com';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        async function isAuthenticated() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/me`, {
+                    credentials: 'include'
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                return false;
+            }
+        }
+
+        async function fetchProductDetails() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/products/${productId}`);
+                if (!response.ok) throw new Error('Failed to fetch product');
+                const product = await response.json();
+
+                document.getElementById('product-name').textContent = product.name;
+                document.getElementById('product-price').textContent = `$${product.price.toFixed(2)}`;
+                document.getElementById('product-stock').textContent = `In Stock: ${product.stock_quantity} units`;
+                document.getElementById('product-description').textContent = product.description;
+                document.getElementById('main-image').src = `${IMAGE_BASE_URL}/${product.image_url}`;
+
+                const discountResponse = await fetch(`${API_BASE_URL}/product_discounts/valid/${productId}`);
+                const discountData = await discountResponse.json();
+                const discount = discountData.product_discounts[0];
+                const discountElement = document.getElementById('product-discount');
+                if (discount) {
+                    discountElement.textContent = `${discount.discount_percent}% Off`;
+                } else {
+                    discountElement.style.display = 'none';
+                }
+
+                const images = product.images || [];
+                const thumbnailGallery = document.getElementById('thumbnail-gallery');
+                thumbnailGallery.innerHTML = '';
+                images.forEach(image => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = `${IMAGE_BASE_URL}/${image.image_url}`;
+                    thumbnail.alt = product.name;
+                    thumbnail.className = 'thumbnail';
+                    thumbnail.onclick = () => {
+                        document.getElementById('main-image').src = thumbnail.src;
+                        document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+                        thumbnail.classList.add('active');
+                    };
+                    thumbnailGallery.appendChild(thumbnail);
+                });
+                if (images.length > 0) {
+                    thumbnailGallery.querySelector('.thumbnail').classList.add('active');
+                }
+
+                if (await isAuthenticated()) {
+                    document.getElementById('submit-review-btn').style.display = 'inline-block';
+                }
+
+                document.getElementById('add-to-cart-btn').onclick = async (e) => {
+                    e.preventDefault();
+                    if (!await isAuthenticated()) {
+                        alert('Please log in to add items to your cart.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    const quantity = parseInt(document.getElementById('quantity-input').value);
+                    if (quantity < 1) {
+                        alert('Please select a valid quantity.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/cart/items`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                product_id: parseInt(productId),
+                                quantity: quantity
+                            })
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to add to cart');
+                        }
+                        const cartItem = await response.json();
+                        alert('Product added to cart!');
+                        window.location.href = 'cart.html';
+                    } catch (error) {
+                        console.error('Error adding to cart:', error);
+                        alert(`Failed to add to cart: ${error.message}`);
+                    }
+                };
+            } catch (error) {
+                console.error('Error fetching product details:', error);
+                document.getElementById('product-content').innerHTML = '<p>Product not found or an error occurred.</p>';
+            }
+        }
+
+        async function fetchReviews() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/reviews/product/${productId}`);
+                if (!response.ok) throw new Error('Failed to fetch reviews');
+                const data = await response.json();
+                const reviews = data.reviews || [];
+
+                const reviewsList = document.getElementById('reviews-list');
+                reviewsList.innerHTML = '';
+                if (reviews.length === 0) {
+                    reviewsList.innerHTML = '<p>No reviews yet for this product.</p>';
+                    return;
+                }
+
+                reviews.forEach(review => {
+                    const reviewElement = document.createElement('div');
+                    reviewElement.className = 'review';
+                    reviewElement.innerHTML = `
+                        <div class="rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                        <p class="comment">${review.comment}</p>
+                        <p class="date">Posted on ${new Date(review.created_at).toLocaleDateString()}</p>
+                    `;
+                    reviewsList.appendChild(reviewElement);
+                });
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+                document.getElementById('reviews-list').innerHTML = '<p>Failed to load reviews.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!productId || isNaN(productId)) {
+                document.getElementById('product-content').innerHTML = '<p>Invalid product ID.</p>';
+                return;
+            }
+            fetchProductDetails();
+            fetchReviews();
+        });
+    </script>
+</body>
+</html>
